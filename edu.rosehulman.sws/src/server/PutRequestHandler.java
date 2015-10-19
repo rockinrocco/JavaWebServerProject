@@ -71,8 +71,7 @@ public class PutRequestHandler implements IRequestHandler {
 		} finally {
 		   try {writer.close();} catch (Exception ex) {/*ignore*/}
 		}
-					// File does not exist so lets create 404 file not found code
-					return HttpResponseFactory.create201CreatedFile(file, Protocol.CLOSE);
+		return HttpResponseFactory.create201CreatedFile(file, Protocol.CLOSE);
 				}
 	
 }
