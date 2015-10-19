@@ -26,6 +26,10 @@ import gui.WebServer;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
+
+import protocol.Protocol;
 
 /**
  * This represents a welcoming server for the incoming
@@ -34,6 +38,7 @@ import java.net.Socket;
  * @author Chandan R. Rupakheti (rupakhet@rose-hulman.edu)
  */
 public class Server implements Runnable {
+	private HashMap<String, IRequestHandler> requestHandlers;
 	private String rootDirectory;
 	private int port;
 	private boolean stop;
@@ -54,6 +59,11 @@ public class Server implements Runnable {
 		this.connections = 0;
 		this.serviceTime = 0;
 		this.window = window;
+		this.requestHandlers = new HashMap<String, IRequestHandler>();
+		this.requestHandlers.put(Protocol.GET, new GetRequestHandler());
+		this.requestHandlers.put(Protocol.POST, new PostRequestHandler());
+		this.requestHandlers.put(Protocol.PUT, new PutRequestHandler());
+		this.requestHandlers.put(Protocol.DELETE, new DeleteRequestHandler());
 	}
 
 	/**
@@ -74,6 +84,14 @@ public class Server implements Runnable {
 	public int getPort() {
 		return port;
 	}
+	/**
+	 * 
+	 * Get the handlers to use the code
+	 * 
+	 */
+	 public HashMap<String,IRequestHandler> getHandlers(){
+		return requestHandlers;
+	 }
 	
 	/**
 	 * Returns connections serviced per second. 

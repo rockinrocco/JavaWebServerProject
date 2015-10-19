@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.HashMap;
 
 import protocol.HttpRequest;
 import protocol.HttpResponse;
@@ -47,6 +48,7 @@ public class ConnectionHandler implements Runnable {
 	public ConnectionHandler(Server server, Socket socket) {
 		this.server = server;
 		this.socket = socket;
+		
 	}
 	
 	/**
@@ -67,6 +69,7 @@ public class ConnectionHandler implements Runnable {
 		// Get the start time
 		long start = System.currentTimeMillis();
 		
+		HashMap<String, IRequestHandler> requestHandlers = server.getHandlers();
 		InputStream inStream = null;
 		OutputStream outStream = null;
 		
@@ -140,11 +143,9 @@ public class ConnectionHandler implements Runnable {
 				// "request.version" string ignoring the case of the letters in both strings
 				// TODO: Fill in the rest of the code here
 			}
-			else if(request.getMethod().equalsIgnoreCase(Protocol.GET)) {
-//				Map<String, String> header = request.getHeader();
-//				String date = header.get("if-modified-since");
-//				String hostName = header.get("host");
-//				
+			else if(requestHandlers.containsKey(request.getMethod().toUpperCase())) {
+				requestHandlers.get(request.getMethod().toUpperCase()).handleRequest(request,
+						server.getRootDirectory());
 				// Handling GET request here
 				// Get relative URI path from request
 				String uri = request.getUri();
