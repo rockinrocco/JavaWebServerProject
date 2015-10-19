@@ -50,6 +50,7 @@ public class GetRequestHandler implements IRequestHandler {
 //		String date = header.get("if-modified-since");
 //		String hostName = header.get("host");
 //		
+		
 		String uri = request.getUri();
 		// Combine them together to form absolute file path
 		File file = new File(rootDirectory + uri);
