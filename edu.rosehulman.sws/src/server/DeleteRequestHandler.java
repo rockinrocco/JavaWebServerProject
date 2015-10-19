@@ -46,13 +46,7 @@ public class DeleteRequestHandler implements IRequestHandler {
 	 */
 	@Override
 	public HttpResponse handleRequest(HttpRequest request, String rootDirectory) {
-//		Map<String, String> header = request.getHeader();
-//		String date = header.get("if-modified-since");
-//		String hostName = header.get("host");
-//		
 		String uri = request.getUri();
-		// Get root directory path from server
-//		String rootDirectory = server.getRootDirectory();
 		// Combine them together to form absolute file path
 		File file = new File(rootDirectory + uri);
 		// Check if the file exists
@@ -62,8 +56,13 @@ public class DeleteRequestHandler implements IRequestHandler {
 				String location = rootDirectory + uri + System.getProperty("file.separator") + Protocol.DEFAULT_FILE;
 				file = new File(location);
 				if(file.exists()) {
-					// Lets create 200 OK response
-					return HttpResponseFactory.create200OK(file, Protocol.CLOSE);
+					if(file.delete()){
+						// Lets create 200 OK response
+						return HttpResponseFactory.create200OK(file, Protocol.CLOSE);
+					}else{
+						// Letting it know the file was not modified of being deleted
+						return HttpResponseFactory.create304NotModified(Protocol.CLOSE);
+					}
 				}
 				else {
 					// File does not exist so lets create 404 file not found code
@@ -71,8 +70,13 @@ public class DeleteRequestHandler implements IRequestHandler {
 				}
 			}
 			else { // Its a file
-				// Lets create 200 OK response
-				return HttpResponseFactory.create200OK(file, Protocol.CLOSE);
+				if(file.delete()){
+					// Lets create 200 OK response
+					return HttpResponseFactory.create200OK(file, Protocol.CLOSE);
+				}else{
+					// Letting it know the file was not modified of being deleted
+					return HttpResponseFactory.create304NotModified(Protocol.CLOSE);
+				}
 			}
 		}
 		else {
