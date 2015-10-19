@@ -92,6 +92,16 @@ public class HttpResponseFactory {
 		return response;
 	}
 	
+	public static HttpResponse create200OK(String connection) {
+		HttpResponse response = new HttpResponse(Protocol.VERSION, Protocol.OK_CODE, 
+				Protocol.OK_TEXT, new HashMap<String, String>(), null);
+		
+		// Lets fill up header fields with more information
+		fillGeneralHeader(response, connection);
+		
+		return response;
+	}
+	
 	/**
 	 * Creates a {@link HttpResponse} object for sending bad request response.
 	 * 

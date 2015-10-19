@@ -10,8 +10,12 @@
     url: $("#fname").val(),
     type: 'DELETE',
     data: JSON.stringify($("#text").val()),
+           headers: {
+            "Content-Type":"application/atom+xml",
+            "Content-Length": JSON.stringify($("#text").val()),
+            },
     success: function(result) {
-        // Do something with the result
+        console.log(result.text)
     }
 });
   }
@@ -21,6 +25,10 @@
     url: $("#fname").val(),
     type: 'PUT',
         data: JSON.stringify($("#text").val()),
+                   headers: {
+            "Content-Type":"application/atom+xml",
+            "Content-Length": JSON.stringify($("#text").val()),
+            },
     success: function(result) {
         // Do something with the result
     }

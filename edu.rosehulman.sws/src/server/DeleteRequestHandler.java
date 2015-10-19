@@ -58,7 +58,7 @@ public class DeleteRequestHandler implements IRequestHandler {
 				if(file.exists()) {
 					if(file.delete()){
 						// Lets create 200 OK response
-						return HttpResponseFactory.create200OK(file, Protocol.CLOSE);
+						return HttpResponseFactory.create200OK(Protocol.CLOSE);
 					}else{
 						// Letting it know the file was not modified of being deleted
 						return HttpResponseFactory.create304NotModified(Protocol.CLOSE);
@@ -72,7 +72,7 @@ public class DeleteRequestHandler implements IRequestHandler {
 			else { // Its a file
 				if(file.delete()){
 					// Lets create 200 OK response
-					return HttpResponseFactory.create200OK(file, Protocol.CLOSE);
+					return HttpResponseFactory.create200OK(Protocol.CLOSE);
 				}else{
 					// Letting it know the file was not modified of being deleted
 					return HttpResponseFactory.create304NotModified(Protocol.CLOSE);
