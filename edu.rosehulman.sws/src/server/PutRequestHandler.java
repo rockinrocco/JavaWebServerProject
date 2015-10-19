@@ -28,7 +28,15 @@
  
 package server;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 
 import protocol.HttpRequest;
 import protocol.HttpResponse;
@@ -49,36 +57,22 @@ public class PutRequestHandler implements IRequestHandler {
 //		Map<String, String> header = request.getHeader();
 //		String date = header.get("if-modified-since");
 //		String hostName = header.get("host");
-//		
-		String uri = request.getUri();
-		// Get root directory path from server
-//		String rootDirectory = server.getRootDirectory();
-		// Combine them together to form absolute file path
-		File file = new File(rootDirectory + uri);
-		// Check if the file exists
-		if(file.exists()) {
-			if(file.isDirectory()) {
-				// Look for default index.html file in a directory
-				String location = rootDirectory + uri + System.getProperty("file.separator") + Protocol.DEFAULT_FILE;
-				file = new File(location);
-				if(file.exists()) {
-					// Lets create 200 OK response
-					return HttpResponseFactory.create200OK(file, Protocol.CLOSE);
-				}
-				else {
-					// File does not exist so lets create 404 file not found code
-					return HttpResponseFactory.create404NotFound(Protocol.CLOSE);
-				}
-			}
-			else { // Its a file
-				// Lets create 200 OK response
-				return HttpResponseFactory.create200OK(file, Protocol.CLOSE);
-			}
-		}
-		else {
-			// File does not exist so lets create 404 file not found code
-			return HttpResponseFactory.create404NotFound(Protocol.CLOSE);
-		}
-	}
 
+		String uri = request.getUri();
+		File file = new File(rootDirectory + uri);
+		Writer writer = null;
+
+		try {
+		    writer = new BufferedWriter(new OutputStreamWriter(
+		          new FileOutputStream(rootDirectory + uri), "utf-8"));
+		    writer.write(request.getBody());
+		} catch (IOException ex) {
+		  // report
+		} finally {
+		   try {writer.close();} catch (Exception ex) {/*ignore*/}
+		}
+					// File does not exist so lets create 404 file not found code
+					return HttpResponseFactory.create201CreatedFile(file, Protocol.CLOSE);
+				}
+	
 }

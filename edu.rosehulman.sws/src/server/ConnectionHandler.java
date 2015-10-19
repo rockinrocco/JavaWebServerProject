@@ -138,45 +138,15 @@ public class ConnectionHandler implements Runnable {
 			// Fill in the code to create a response for version mismatch.
 			// You may want to use constants such as Protocol.VERSION, Protocol.NOT_SUPPORTED_CODE, and more.
 			// You can check if the version matches as follows
+			
 			if(!request.getVersion().equalsIgnoreCase(Protocol.VERSION)) {
 				// Here you checked that the "Protocol.VERSION" string is not equal to the  
 				// "request.version" string ignoring the case of the letters in both strings
 				// TODO: Fill in the rest of the code here
 			}
 			else if(requestHandlers.containsKey(request.getMethod().toUpperCase())) {
-				requestHandlers.get(request.getMethod().toUpperCase()).handleRequest(request,
+				response = requestHandlers.get(request.getMethod().toUpperCase()).handleRequest(request,
 						server.getRootDirectory());
-				// Handling GET request here
-				// Get relative URI path from request
-				String uri = request.getUri();
-				// Get root directory path from server
-				String rootDirectory = server.getRootDirectory();
-				// Combine them together to form absolute file path
-				File file = new File(rootDirectory + uri);
-				// Check if the file exists
-				if(file.exists()) {
-					if(file.isDirectory()) {
-						// Look for default index.html file in a directory
-						String location = rootDirectory + uri + System.getProperty("file.separator") + Protocol.DEFAULT_FILE;
-						file = new File(location);
-						if(file.exists()) {
-							// Lets create 200 OK response
-							response = HttpResponseFactory.create200OK(file, Protocol.CLOSE);
-						}
-						else {
-							// File does not exist so lets create 404 file not found code
-							response = HttpResponseFactory.create404NotFound(Protocol.CLOSE);
-						}
-					}
-					else { // Its a file
-						// Lets create 200 OK response
-						response = HttpResponseFactory.create200OK(file, Protocol.CLOSE);
-					}
-				}
-				else {
-					// File does not exist so lets create 404 file not found code
-					response = HttpResponseFactory.create404NotFound(Protocol.CLOSE);
-				}
 			}
 		}
 		catch(Exception e) {
