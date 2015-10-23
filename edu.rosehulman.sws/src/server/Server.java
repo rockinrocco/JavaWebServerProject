@@ -205,6 +205,7 @@ public class Server implements Runnable {
 
 	/**
 	 * @param filename
+	 * This function get called when a new file is removed
 	 */
 	public void removePlugin(Path filename) {
 		// TODO Auto-generated method stub
@@ -214,6 +215,7 @@ public class Server implements Runnable {
 
 	/**
 	 * @param filename
+	 * This function get called when a new file is created or updated
 	 */
 	public void uploadPlugin(Path filename) {
 		// TODO Auto-generated method stub
