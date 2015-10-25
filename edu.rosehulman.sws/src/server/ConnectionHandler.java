@@ -27,6 +27,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.HashMap;
 
+import plugin.IPlugin;
 import protocol.HttpRequest;
 import protocol.HttpResponse;
 import protocol.HttpResponseFactory;
@@ -70,6 +71,7 @@ public class ConnectionHandler implements Runnable {
 		long start = System.currentTimeMillis();
 		
 		HashMap<String, IRequestHandler> requestHandlers = server.getHandlers();
+		HashMap<String, IPlugin> plugins = new HashMap<String,IPlugin>();
 		InputStream inStream = null;
 		OutputStream outStream = null;
 		
@@ -138,46 +140,63 @@ public class ConnectionHandler implements Runnable {
 			// Fill in the code to create a response for version mismatch.
 			// You may want to use constants such as Protocol.VERSION, Protocol.NOT_SUPPORTED_CODE, and more.
 			// You can check if the version matches as follows
+			String rootDirectory = server.getRootDirectory();
+			String uri = request.getUri();
+			String[] paths = uri.split("/");
 			if(!request.getVersion().equalsIgnoreCase(Protocol.VERSION)) {
 				// Here you checked that the "Protocol.VERSION" string is not equal to the  
 				// "request.version" string ignoring the case of the letters in both strings
 				// TODO: Fill in the rest of the code here
 			}
-			else if(requestHandlers.containsKey(request.getMethod().toUpperCase())) {
-				requestHandlers.get(request.getMethod().toUpperCase()).handleRequest(request,
-						server.getRootDirectory());
-				// Handling GET request here
-				// Get relative URI path from request
-				String uri = request.getUri();
-				// Get root directory path from server
-				String rootDirectory = server.getRootDirectory();
-				// Combine them together to form absolute file path
-				File file = new File(rootDirectory + uri);
-				// Check if the file exists
-				if(file.exists()) {
-					if(file.isDirectory()) {
-						// Look for default index.html file in a directory
-						String location = rootDirectory + uri + System.getProperty("file.separator") + Protocol.DEFAULT_FILE;
-						file = new File(location);
-						if(file.exists()) {
-							// Lets create 200 OK response
-							response = HttpResponseFactory.create200OK(file, Protocol.CLOSE);
-						}
-						else {
-							// File does not exist so lets create 404 file not found code
-							response = HttpResponseFactory.create404NotFound(Protocol.CLOSE);
-						}
-					}
-					else { // Its a file
-						// Lets create 200 OK response
-						response = HttpResponseFactory.create200OK(file, Protocol.CLOSE);
-					}
-				}
-				else {
-					// File does not exist so lets create 404 file not found code
+			else if(plugins.containsKey(paths[0])) {
+				String newURI = paths[1];
+				if(paths.length>2){
 					response = HttpResponseFactory.create404NotFound(Protocol.CLOSE);
+				}else{
+					for(int i=2;i<paths.length;i++){
+						newURI+="/"+paths[i];
+					}
+					response = plugins.get(paths[0]).handleRequest(request, newURI,
+						server.getRootDirectory());
 				}
 			}
+			
+			
+//			else if(requestHandlers.containsKey(request.getMethod().toUpperCase())) {
+//				requestHandlers.get(request.getMethod().toUpperCase()).handleRequest(request,
+//						server.getRootDirectory());
+//				// Handling GET request here
+//				// Get relative URI path from request
+////				String uri = request.getUri();
+//				// Get root directory path from server
+//				String rootDirectory = server.getRootDirectory();
+//				// Combine them together to form absolute file path
+//				File file = new File(rootDirectory + uri);
+//				// Check if the file exists
+//				if(file.exists()) {
+//					if(file.isDirectory()) {
+//						// Look for default index.html file in a directory
+//						String location = rootDirectory + uri + System.getProperty("file.separator") + Protocol.DEFAULT_FILE;
+//						file = new File(location);
+//						if(file.exists()) {
+//							// Lets create 200 OK response
+//							response = HttpResponseFactory.create200OK(file, Protocol.CLOSE);
+//						}
+//						else {
+//							// File does not exist so lets create 404 file not found code
+//							response = HttpResponseFactory.create404NotFound(Protocol.CLOSE);
+//						}
+//					}
+//					else { // Its a file
+//						// Lets create 200 OK response
+//						response = HttpResponseFactory.create200OK(file, Protocol.CLOSE);
+//					}
+//				}
+//				else {
+//					// File does not exist so lets create 404 file not found code
+//					response = HttpResponseFactory.create404NotFound(Protocol.CLOSE);
+//				}
+//			}
 		}
 		catch(Exception e) {
 			e.printStackTrace();
