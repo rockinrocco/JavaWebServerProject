@@ -1,8 +1,57 @@
 <html>
 <head>
 	<title>Test Page</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 </head>
+  
+  <script>
+  function submitDelete(){
+ $.ajax({
+    url: $("#fname").val(),
+    type: 'DELETE',
+    data: JSON.stringify($("#text").val()),
+    success: function(result) {
+        console.log(result.text)
+    }
+});
+  }
+  
+    function submitPut(){
+ $.ajax({
+    url: $("#fname").val(),
+    type: 'PUT',
+        data: JSON.stringify($("#text").val()),
+    success: function(result) {
+        // Do something with the result
+    }
+});
+  }
+  
+  
+    function submitPost(){
+ $.ajax({
+    url: $("#fname").val(),
+    type: 'POST',
+        data: JSON.stringify($("#text").val()),
+    
+    success: function(result) {
+        // Do something with the result
+    }
+});
+  }
+  
+  
+  </script>
 <body>
 	<p>Test Page Successful!</p>
+	
+  Filename:<input id="fname" type="text" name="fname"><br>
+  Text: <input id="text" type="text" name="fileText"><br>
+  <button onclick="submitPost()"> POST</button>
+  <button onclick="submitPut()"> PUT</button>
+    <button onclick="submitDelete()"> DELETE</button>
+ 
+  
+
 </body>
 </html>

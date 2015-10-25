@@ -59,6 +59,8 @@ public class Protocol {
     public static final int NOT_SUPPORTED_CODE = 505;
     public static final String NOT_SUPPORTED_TEXT = "HTTP Version Not Supported";
     
+    public static final int CREATE_CODE = 201;
+    public static final String CREATED_TEXT ="Created";
     public static final int NOT_MODIFIED_CODE = 304;
     public static final String NOT_MODIFIED_TEXT = "Not Modified";
 
