@@ -23,10 +23,14 @@ package server;
 
 import gui.WebServer;
 
+import java.awt.Container;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -34,10 +38,16 @@ import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
+import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
+import plugin.IPlugin;
 import protocol.Protocol;
+import servlet.IServlet;
 
 /**
  * This represents a welcoming server for the incoming TCP request from a HTTP
@@ -57,6 +67,7 @@ public class Server implements Runnable {
 	private long serviceTime;
 
 	private WebServer window;
+	private HashMap<String, IPlugin> plugins;
 
 	/**
 	 * @param rootDirectory
@@ -70,6 +81,7 @@ public class Server implements Runnable {
 		this.connections = 0;
 		this.serviceTime = 0;
 		this.window = window;
+		this.plugins = new HashMap<String,IPlugin>();
 		this.requestHandlers = new HashMap<String, IRequestHandler>();
 		this.requestHandlers.put(Protocol.GET, new GetRequestHandler());
 		this.requestHandlers.put(Protocol.POST, new PostRequestHandler());
@@ -146,7 +158,7 @@ public class Server implements Runnable {
 	public void run() {
 		try {
 			PluginWatcher watcher = new PluginWatcher(this,rootDirectory);
-			watcher.run();
+			new Thread(watcher).start();
 			this.welcomeSocket = new ServerSocket(port);
 
 			// Now keep welcoming new connections until stop flag is set to true
@@ -209,8 +221,10 @@ public class Server implements Runnable {
 	 */
 	public void removePlugin(Path filename) {
 		// TODO Auto-generated method stub
-		System.out.println("delete");
-
+		String file = filename.getFileName().toString();
+		int split = file.indexOf('.');
+		String name = file.substring(0,split);
+		plugins.remove(name);
 	}
 
 	/**
@@ -219,6 +233,29 @@ public class Server implements Runnable {
 	 */
 	public void uploadPlugin(Path filename) {
 		// TODO Auto-generated method stub
-		System.out.println("upload");
+		try {
+		JarClassLoader jarLoader = new JarClassLoader(filename.toString());
+		String file = filename.getFileName().toString();
+		int split = file.indexOf('.');
+		String name = file.substring(0,split);
+		System.out.println(name);
+		Class c = jarLoader.loadClass(name, true);
+        Object o;
+		o = c.newInstance();
+        IPlugin plugin = (IPlugin) c.newInstance();
+        System.out.println(plugin.getName() + " added");
+        plugins.put(name,plugin);
+        
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+}
+
+	/**
+	 * @return
+	 */
+	public HashMap<String, IPlugin> getPlugins() {
+		// TODO Auto-generated method stub
+		return this.plugins;
 	}
 }

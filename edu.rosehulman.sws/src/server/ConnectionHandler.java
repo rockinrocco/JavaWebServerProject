@@ -70,8 +70,7 @@ public class ConnectionHandler implements Runnable {
 		// Get the start time
 		long start = System.currentTimeMillis();
 		
-		HashMap<String, IRequestHandler> requestHandlers = server.getHandlers();
-		HashMap<String, IPlugin> plugins = new HashMap<String,IPlugin>();
+		HashMap<String, IPlugin> plugins = this.server.getPlugins();;
 		InputStream inStream = null;
 		OutputStream outStream = null;
 		
@@ -142,7 +141,9 @@ public class ConnectionHandler implements Runnable {
 			// You can check if the version matches as follows
 			String rootDirectory = server.getRootDirectory();
 			String uri = request.getUri();
+			System.out.println(uri);
 			String[] paths = uri.split("/");
+			System.out.println("Path @ " +paths[1]);
 			if(!request.getVersion().equalsIgnoreCase(Protocol.VERSION)) {
 				// Here you checked that the "Protocol.VERSION" string is not equal to the  
 				// "request.version" string ignoring the case of the letters in both strings

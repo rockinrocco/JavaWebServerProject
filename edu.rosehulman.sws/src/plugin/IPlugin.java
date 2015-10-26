@@ -18,6 +18,9 @@ public abstract class IPlugin implements Runnable{
 	public IPlugin(){
 		servlets = new HashMap<String,IServlet>();
 	}
+	
+	public abstract String getName();
+	
 	public abstract void init();
 	public boolean addServlet(IServlet servlet){
 		String type = servlet.getHttpRequestType();

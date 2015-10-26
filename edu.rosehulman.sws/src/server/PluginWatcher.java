@@ -84,10 +84,14 @@ public class PluginWatcher implements Runnable{
 
 		            WatchEvent<Path> ev = (WatchEvent<Path>) event;
 		            Path filename = ev.context();
+		            filename = dir.resolve(filename);
+		            System.out.println(kind);
 		            if(kind == StandardWatchEventKinds.ENTRY_DELETE){
 		            	server.removePlugin(filename);
-		            } else {
+		            } else if (kind == StandardWatchEventKinds.ENTRY_CREATE){
 		            	server.uploadPlugin(filename);
+		            } else if (kind == StandardWatchEventKinds.ENTRY_MODIFY){
+		            	
 		            }
 		          }
 		            watchKey.reset();
