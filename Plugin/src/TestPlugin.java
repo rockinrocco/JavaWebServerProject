@@ -1,6 +1,4 @@
 /*
- * TestPlugin.java
- * Oct 25, 2015
  *
  * Simple Web Server (SWS) for EE407/507 and CS455/555
  * 
@@ -26,15 +24,16 @@
  * http://clarkson.edu/~rupakhcr
  */
  
-package TestPlugin;
+
 
 import plugin.IPlugin;
 
+
 /**
  * 
- * @author Chandan R. Rupakheti (rupakhcr@clarkson.edu)
+ * @author Matt Rocco and Paul Bliudzius
  */
-public class TestPlugin extends IPlugin {
+public class TestPlugin extends IPlugin{
 
 	/**
 	 * @param root
@@ -43,18 +42,22 @@ public class TestPlugin extends IPlugin {
 	}
 
 	@Override
-	public String getName() {
-		return "Test Plugin";
-	}
-
-	@Override
 	public void init(String root) {
 		super.init(root);
-		//Add Servlets
+		addServlet(new FileGetGood("GET",rootDirectory));
+		addServlet(new FilePostGood("POST",rootDirectory));
+		addServlet(new FileDeleteGood("DELETE",rootDirectory));
+		addServlet(new HttpWorks("GET",rootDirectory));
 	}
 
 	@Override
 	public void run() {
+
+	}
+
+	@Override
+	public String getName() {
+		return "TestPlugin";
 	}
 
 }

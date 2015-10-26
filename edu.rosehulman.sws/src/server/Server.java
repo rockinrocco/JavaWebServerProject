@@ -242,7 +242,7 @@ public class Server implements Runnable {
         Object o;
 		o = c.newInstance();
         IPlugin plugin = (IPlugin) c.newInstance();
-        plugin.init();
+        plugin.init(this.getRootDirectory());
         plugins.put(name,plugin);
        
 		} catch (Exception e){

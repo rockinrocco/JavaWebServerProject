@@ -26,7 +26,10 @@
  
 package plugin;
 
-import servlet.TestServlet;
+import servlet.FileDeleteGood;
+import servlet.FileGetGood;
+import servlet.FilePostGood;
+import servlet.HttpWorks;
 
 /**
  * 
@@ -34,29 +37,28 @@ import servlet.TestServlet;
  */
 public class TestPlugin extends IPlugin{
 
-	/* (non-Javadoc)
-	 * @see plugin.IPlugin#init()
+	/**
+	 * @param root
 	 */
-	@Override
-	public void init() {
-		System.out.println("running");
-		addServlet(new TestServlet());
+	public TestPlugin() {
 	}
 
-	/* (non-Javadoc)
-	 * @see plugin.IPlugin#run()
-	 */
+	@Override
+	public void init(String root) {
+		super.init(root);
+		addServlet(new FileGetGood("GET",rootDirectory));
+		addServlet(new FilePostGood("POST",rootDirectory));
+		addServlet(new FileDeleteGood("DELETE",rootDirectory));
+		addServlet(new HttpWorks("GET",rootDirectory));
+	}
+
 	@Override
 	public void run() {
 
 	}
 
-	/* (non-Javadoc)
-	 * @see plugin.IPlugin#getName()
-	 */
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
 		return "TestPlugin";
 	}
 

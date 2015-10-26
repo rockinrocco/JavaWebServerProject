@@ -13,7 +13,8 @@ import protocol.Protocol;
  * @author Matt Rocco and Paul Bliudzius
  */
 public abstract class IPlugin implements Runnable{
-	public HashMap<String,IServlet> servlets;
+	protected HashMap<String,IServlet> servlets;
+	protected String rootDirectory;
 	
 	public IPlugin(){
 		servlets = new HashMap<String,IServlet>();
@@ -21,7 +22,9 @@ public abstract class IPlugin implements Runnable{
 	
 	public abstract String getName();
 	
-	public abstract void init();
+	public void init(String root){
+		rootDirectory = root;
+	}
 	public boolean addServlet(IServlet servlet){
 		String type = servlet.getHttpRequestType();
 		if(type==null){

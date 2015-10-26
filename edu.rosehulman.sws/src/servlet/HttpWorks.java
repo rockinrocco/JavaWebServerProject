@@ -39,14 +39,10 @@ import protocol.Protocol;
  * 
  * @author Paul Bliudzius
  */
-public class TestServlet extends IServlet{
+public class HttpWorks extends IServlet{
 
-	public TestServlet(String type) {
-		super(type);
-	}
-	
-	public TestServlet(){
-		this("GET");
+	public HttpWorks(String type,String root) {
+		super(type,root);
 	}
 
 	@Override
@@ -54,12 +50,8 @@ public class TestServlet extends IServlet{
 		return HttpResponseFactory.create200OK(Protocol.CLOSE);
 	}
 
-	/* (non-Javadoc)
-	 * @see servlet.IServlet#getName()
-	 */
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
 		return "TestServlet";
 	}
 }
