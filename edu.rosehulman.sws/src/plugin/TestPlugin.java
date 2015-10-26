@@ -1,6 +1,6 @@
 /*
- * TestServlet.java
- * Oct 22, 2015
+ * TestPlugin.java
+ * Oct 26, 2015
  *
  * Simple Web Server (SWS) for EE407/507 and CS455/555
  * 
@@ -26,31 +26,31 @@
  * http://clarkson.edu/~rupakhcr
  */
  
-package servlet;
+package plugin;
 
-import java.io.File;
-
-import protocol.HttpRequest;
-import protocol.HttpResponse;
-import protocol.HttpResponseFactory;
-import protocol.Protocol;
+import servlet.TestServlet;
 
 /**
  * 
- * @author Paul Bliudzius
+ * @author Matt Rocco and Paul Bliudzius
  */
-public class TestServlet extends IServlet{
+public class TestPlugin extends IPlugin{
 
-	public TestServlet(String type) {
-		super(type);
-	}
-	
-	public TestServlet(){
-		this("GET");
-	}
-
+	/* (non-Javadoc)
+	 * @see plugin.IPlugin#init()
+	 */
 	@Override
-	public HttpResponse handleRequest(HttpRequest request) {
-		return HttpResponseFactory.create200OK(Protocol.CLOSE);
+	public void init() {
+		System.out.println("running");
+		addServlet(new TestServlet());
 	}
+
+	/* (non-Javadoc)
+	 * @see plugin.IPlugin#run()
+	 */
+	@Override
+	public void run() {
+		
+	}
+
 }

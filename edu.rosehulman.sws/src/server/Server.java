@@ -145,10 +145,11 @@ public class Server implements Runnable {
 	 */
 	public void run() {
 		try {
+			System.out.println("WORK");
 			PluginWatcher watcher = new PluginWatcher(this,rootDirectory);
-			watcher.run();
+			new Thread(watcher).start();
+			
 			this.welcomeSocket = new ServerSocket(port);
-
 			// Now keep welcoming new connections until stop flag is set to true
 			while (true) {
 				// Listen for incoming socket connection
