@@ -91,7 +91,7 @@ public class PluginWatcher implements Runnable{
 		            } else if (kind == StandardWatchEventKinds.ENTRY_CREATE){
 		            	server.uploadPlugin(filename);
 		            } else if (kind == StandardWatchEventKinds.ENTRY_MODIFY){
-		            	
+		            	server.reloadPlugin(filename);
 		            }
 		          }
 		            watchKey.reset();
