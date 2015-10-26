@@ -25,10 +25,12 @@ public abstract class IPlugin implements Runnable{
 	public boolean addServlet(IServlet servlet){
 		String type = servlet.getHttpRequestType();
 		if(type==null){
+			System.out.println("FAILURE");
 			return false;
 		}
-		String servClass = servlet.getClass().toString();
+		String servClass = servlet.getName();
 		String key=type.toUpperCase()+":"+servClass;
+		System.out.println("SETKEy:"+key);
 		if(servlets.containsKey(key)){
 			return false;
 		}else{
@@ -55,6 +57,7 @@ public abstract class IPlugin implements Runnable{
 
 	public HttpResponse handleRequest(HttpRequest request, String uri, String rootDirectory){
 		String key=request.getMethod().toUpperCase()+":"+uri;
+		System.out.println("KEY:"+key);
 		if(servlets.containsKey(key)){
 			return servlets.get(key).handleRequest(request);
 		}else{

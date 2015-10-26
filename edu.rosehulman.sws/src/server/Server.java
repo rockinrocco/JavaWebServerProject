@@ -159,8 +159,8 @@ public class Server implements Runnable {
 		try {
 			PluginWatcher watcher = new PluginWatcher(this,rootDirectory);
 			new Thread(watcher).start();
-			this.welcomeSocket = new ServerSocket(port);
 
+			this.welcomeSocket = new ServerSocket(port);
 			// Now keep welcoming new connections until stop flag is set to true
 			while (true) {
 				// Listen for incoming socket connection
@@ -238,14 +238,13 @@ public class Server implements Runnable {
 		String file = filename.getFileName().toString();
 		int split = file.indexOf('.');
 		String name = file.substring(0,split);
-		System.out.println(name);
 		Class c = jarLoader.loadClass(name, true);
         Object o;
 		o = c.newInstance();
         IPlugin plugin = (IPlugin) c.newInstance();
-        System.out.println(plugin.getName() + " added");
+        plugin.init();
         plugins.put(name,plugin);
-        
+       
 		} catch (Exception e){
 			e.printStackTrace();
 		}

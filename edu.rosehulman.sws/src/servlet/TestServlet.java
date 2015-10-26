@@ -28,8 +28,12 @@
  
 package servlet;
 
+import java.io.File;
+
 import protocol.HttpRequest;
 import protocol.HttpResponse;
+import protocol.HttpResponseFactory;
+import protocol.Protocol;
 
 /**
  * 
@@ -47,6 +51,15 @@ public class TestServlet extends IServlet{
 
 	@Override
 	public HttpResponse handleRequest(HttpRequest request) {
-		return null;
+		return HttpResponseFactory.create200OK(Protocol.CLOSE);
+	}
+
+	/* (non-Javadoc)
+	 * @see servlet.IServlet#getName()
+	 */
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return "TestServlet";
 	}
 }

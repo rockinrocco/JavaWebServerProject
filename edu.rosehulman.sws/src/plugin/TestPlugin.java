@@ -1,6 +1,4 @@
 /*
- * TestPlugin.java
- * Oct 25, 2015
  *
  * Simple Web Server (SWS) for EE407/507 and CS455/555
  * 
@@ -28,28 +26,21 @@
  
 package plugin;
 
+import servlet.TestServlet;
+
 /**
  * 
- * @author Chandan R. Rupakheti (rupakhcr@clarkson.edu)
+ * @author Matt Rocco and Paul Bliudzius
  */
-public class TestPlugin extends IPlugin {
-
-	/* (non-Javadoc)
-	 * @see plugin.IPlugin#getName()
-	 */
-	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return "Test Plugin";
-	}
+public class TestPlugin extends IPlugin{
 
 	/* (non-Javadoc)
 	 * @see plugin.IPlugin#init()
 	 */
 	@Override
 	public void init() {
-		// TODO Auto-generated method stub
-
+		System.out.println("running");
+		addServlet(new TestServlet());
 	}
 
 	/* (non-Javadoc)
@@ -57,8 +48,16 @@ public class TestPlugin extends IPlugin {
 	 */
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 
+	}
+
+	/* (non-Javadoc)
+	 * @see plugin.IPlugin#getName()
+	 */
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return "TestPlugin";
 	}
 
 }

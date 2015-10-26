@@ -19,6 +19,8 @@ public abstract class IServlet {
 	
 	public abstract HttpResponse handleRequest(HttpRequest request);
 	
+	public abstract String getName();
+	
 	public String getHttpRequestType(){
 		return requestType;
 	}

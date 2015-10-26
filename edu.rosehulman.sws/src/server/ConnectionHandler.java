@@ -28,6 +28,7 @@ import java.net.Socket;
 import java.util.HashMap;
 
 import plugin.IPlugin;
+import plugin.TestPlugin;
 import protocol.HttpRequest;
 import protocol.HttpResponse;
 import protocol.HttpResponseFactory;
@@ -71,6 +72,8 @@ public class ConnectionHandler implements Runnable {
 		long start = System.currentTimeMillis();
 		
 		HashMap<String, IPlugin> plugins = this.server.getPlugins();;
+		HashMap<String, IRequestHandler> requestHandlers = server.getHandlers();
+
 		InputStream inStream = null;
 		OutputStream outStream = null;
 		
@@ -141,23 +144,22 @@ public class ConnectionHandler implements Runnable {
 			// You can check if the version matches as follows
 			String rootDirectory = server.getRootDirectory();
 			String uri = request.getUri();
-			System.out.println(uri);
+			System.out.println("Looking for plugin for " + uri);
 			String[] paths = uri.split("/");
-			System.out.println("Path @ " +paths[1]);
 			if(!request.getVersion().equalsIgnoreCase(Protocol.VERSION)) {
 				// Here you checked that the "Protocol.VERSION" string is not equal to the  
 				// "request.version" string ignoring the case of the letters in both strings
 				// TODO: Fill in the rest of the code here
-			}
-			else if(plugins.containsKey(paths[0])) {
-				String newURI = paths[1];
-				if(paths.length>2){
+			}else if(plugins.containsKey(paths[1])) {
+				String newURI = paths[2];
+				System.out.println("looking for SERVLET for  " + newURI);
+				if(paths.length>4){
 					response = HttpResponseFactory.create404NotFound(Protocol.CLOSE);
 				}else{
-					for(int i=2;i<paths.length;i++){
-						newURI+="/"+paths[i];
-					}
-					response = plugins.get(paths[0]).handleRequest(request, newURI,
+//					for(int i=2;i<paths.length;i++){
+//						newURI+="/"+paths[i];
+//					}
+					response = plugins.get(paths[1]).handleRequest(request, newURI,
 						server.getRootDirectory());
 				}
 			}
