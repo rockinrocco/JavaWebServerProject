@@ -150,7 +150,7 @@ public class ConnectionHandler implements Runnable {
 				// TODO: Fill in the rest of the code here
 			}else if(plugins.containsKey(paths[1])) {
 				String newURI = paths[2];
-				System.out.println("looking for SERVLET for  " + newURI);
+				System.out.println("Looking for SERVLET for  " + newURI);
 				if(paths.length>4){
 					response = HttpResponseFactory.create404NotFound(Protocol.CLOSE);
 				}else{

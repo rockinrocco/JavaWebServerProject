@@ -3,3 +3,9 @@ C:\Users\roccoma\Desktop\CSSE 477\WebServer\JavaWebServerProject\edu.rosehulman.
 C:\Users\roccoma\Desktop\CSSE 477\WebServer\JavaWebServerProject\edu.rosehulman.sws\web\MyPlugin.jar
 C:\Users\roccoma\Desktop\CSSE 477\WebServer\JavaWebServerProject\edu.rosehulman.sws\web\MyPlugin.jar
 C:\Users\roccoma\Desktop\CSSE 477\WebServer\JavaWebServerProject\edu.rosehulman.sws\web\MyPlugin.jar
+C:\Users\bliudzpp\workspace2\JavaWebServerProject\edu.rosehulman.sws\web\TestPlugin.jar
+C:\Users\bliudzpp\workspace2\JavaWebServerProject\edu.rosehulman.sws\web\TestPluginTwo.jar
+C:\Users\bliudzpp\workspace2\JavaWebServerProject\edu.rosehulman.sws\web\TestPlugin.jar
+C:\Users\bliudzpp\workspace2\JavaWebServerProject\edu.rosehulman.sws\web\TestPluginTwo.jar
+C:\Users\bliudzpp\workspace2\JavaWebServerProject\edu.rosehulman.sws\web\TestPluginTwo.jar
+C:\Users\bliudzpp\workspace2\JavaWebServerProject\edu.rosehulman.sws\web\TestPlugin.jar
