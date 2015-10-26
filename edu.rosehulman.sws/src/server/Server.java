@@ -24,7 +24,10 @@ package server;
 import gui.WebServer;
 
 import java.awt.Container;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -224,7 +227,9 @@ public class Server implements Runnable {
 		String file = filename.getFileName().toString();
 		int split = file.indexOf('.');
 		String name = file.substring(0,split);
-		plugins.remove(name);
+		if(!plugins.containsKey(name)){
+			plugins.remove(name);
+		}
 	}
 
 	/**
@@ -238,6 +243,7 @@ public class Server implements Runnable {
 		String file = filename.getFileName().toString();
 		int split = file.indexOf('.');
 		String name = file.substring(0,split);
+		if(!plugins.containsKey(name)){
 		Class c = jarLoader.loadClass(name, true);
         Object o;
 		o = c.newInstance();
@@ -245,10 +251,20 @@ public class Server implements Runnable {
         plugin.init(this.getRootDirectory());
         plugins.put(name,plugin);
        
+        writeFilePathToText(filename.toString());
+		}
 		} catch (Exception e){
 			e.printStackTrace();
 		}
 }
+	
+	public void writeFilePathToText(String filepath) throws IOException{
+		try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(".\\plugins.txt", true)))) {
+		    out.println(filepath);
+		}catch (IOException e) {
+		    //exception handling left as an exercise for the reader
+		}
+	}
 
 	/**
 	 * @return
@@ -256,5 +272,14 @@ public class Server implements Runnable {
 	public HashMap<String, IPlugin> getPlugins() {
 		// TODO Auto-generated method stub
 		return this.plugins;
+	}
+
+	/**
+	 * @param filename
+	 */
+	public void reloadPlugin(Path filename) {
+		removePlugin(filename);
+		uploadPlugin(filename);
+		
 	}
 }
