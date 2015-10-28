@@ -47,8 +47,8 @@ import protocol.Protocol;
  */
 public class FilePostGood extends IServlet{
 
-	public FilePostGood(String type,String root) {
-		super(type,root);
+	public FilePostGood(String root) {
+		super(root);
 	}
 	
 	@Override
@@ -85,8 +85,4 @@ public class FilePostGood extends IServlet{
 		}
 	}
 
-	@Override
-	public String getName() {
-		return "FileGood";
-	}
 }

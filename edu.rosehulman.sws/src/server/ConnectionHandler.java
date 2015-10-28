@@ -27,8 +27,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.HashMap;
 
-import plugin.IPlugin;
-import plugin.TestPlugin;
+import AbstractPlugin.AbstractPlugin;
 import protocol.HttpRequest;
 import protocol.HttpResponse;
 import protocol.HttpResponseFactory;
@@ -71,7 +70,7 @@ public class ConnectionHandler implements Runnable {
 		// Get the start time
 		long start = System.currentTimeMillis();
 		
-		HashMap<String, IPlugin> plugins = this.server.getPlugins();;
+		HashMap<String, AbstractPlugin> plugins = this.server.getPlugins();;
 		InputStream inStream = null;
 		OutputStream outStream = null;
 		
@@ -157,6 +156,7 @@ public class ConnectionHandler implements Runnable {
 //					for(int i=2;i<paths.length;i++){
 //						newURI+="/"+paths[i];
 //					}
+					
 					response = plugins.get(paths[1]).handleRequest(request, newURI,
 						server.getRootDirectory());
 				}

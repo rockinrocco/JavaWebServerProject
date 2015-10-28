@@ -69,7 +69,6 @@ public class PluginWatcher implements Runnable{
 					} catch (InterruptedException e) {
 						continue;
 					}
-		      
 		            for (WatchEvent<?> event: watchKey.pollEvents()) {
 		                WatchEvent.Kind<?> kind = event.kind();
 
@@ -85,19 +84,24 @@ public class PluginWatcher implements Runnable{
 		            WatchEvent<Path> ev = (WatchEvent<Path>) event;
 		            Path filename = ev.context();
 		            filename = dir.resolve(filename);
-		            System.out.println(kind);
+		            //wait for file transfer to finish
+		            if(kind != StandardWatchEventKinds.ENTRY_MODIFY){
+					Thread.sleep(3000);
+		            }
+					
 		            if(kind == StandardWatchEventKinds.ENTRY_DELETE){
 		            	server.removePlugin(filename);
 		            } else if (kind == StandardWatchEventKinds.ENTRY_CREATE){
 		            	server.uploadPlugin(filename);
-		            } else if (kind == StandardWatchEventKinds.ENTRY_MODIFY){
-		            	server.reloadPlugin(filename);
 		            }
 		          }
 		            watchKey.reset();
 			  }
 		} catch (IOException x) {
 			System.err.println(x);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 			
 	}

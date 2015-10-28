@@ -41,8 +41,8 @@ import protocol.Protocol;
  */
 public class HttpWorks extends IServlet{
 
-	public HttpWorks(String type,String root) {
-		super(type,root);
+	public HttpWorks(String root) {
+		super(root);
 	}
 
 	@Override
@@ -50,8 +50,4 @@ public class HttpWorks extends IServlet{
 		return HttpResponseFactory.create200OK(Protocol.CLOSE);
 	}
 
-	@Override
-	public String getName() {
-		return "TestServlet";
-	}
 }

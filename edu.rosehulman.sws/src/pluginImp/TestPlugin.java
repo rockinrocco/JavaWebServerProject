@@ -1,6 +1,4 @@
 /*
- * IRequestHandler.java
- * Oct 18, 2015
  *
  * Simple Web Server (SWS) for EE407/507 and CS455/555
  * 
@@ -26,15 +24,54 @@
  * http://clarkson.edu/~rupakhcr
  */
  
-package server;
+package pluginImp;
 
-import protocol.HttpRequest;
-import protocol.HttpResponse;
+import java.util.HashMap;
+import java.util.HashSet;
+
+import AbstractPlugin.AbstractPlugin;
+import servlet.FileDeleteGood;
+import servlet.FileGetGood;
+import servlet.FilePostGood;
+import servlet.HttpWorks;
 
 /**
  * 
  * @author Matt Rocco and Paul Bliudzius
  */
-public interface IRequestHandler {
-	public HttpResponse handleRequest (HttpRequest request, String rootDirectory);
+public class TestPlugin extends AbstractPlugin{
+
+	/**
+	 * @param root
+	 */
+	public TestPlugin() {
+	}
+
+	@Override
+	public void init(String root) {
+		super.init(root);
+		addServlet("Servlet1","GET", new FileGetGood(rootDirectory));
+		addServlet("Servlet1","POST",new FilePostGood(rootDirectory));
+		addServlet("Servlet1","PUT",new FileDeleteGood(rootDirectory));
+		addServlet("Servlet1","DELETE",new HttpWorks(rootDirectory));
+	}
+
+	@Override
+	public void run() {
+
+	}
+
+	@Override
+	public String getName() {
+		return "TestPlugin";
+	}
+
+	/**
+	 * @return
+	 */
+	public char[] getClassPath() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

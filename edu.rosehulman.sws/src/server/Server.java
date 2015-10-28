@@ -23,34 +23,15 @@ package server;
 
 import gui.WebServer;
 
-import java.awt.Container;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.lang.reflect.Method;
+import java.io.File;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardWatchEventKinds;
-import java.nio.file.WatchEvent;
-import java.nio.file.WatchKey;
-import java.nio.file.WatchService;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
-
-import plugin.IPlugin;
-import protocol.Protocol;
-import servlet.IServlet;
+import AbstractPlugin.AbstractPlugin;
 
 /**
  * This represents a welcoming server for the incoming TCP request from a HTTP
@@ -59,7 +40,6 @@ import servlet.IServlet;
  * @author Chandan R. Rupakheti (rupakhet@rose-hulman.edu)
  */
 public class Server implements Runnable {
-	private HashMap<String, IRequestHandler> requestHandlers;
 	private String rootDirectory;
 	private int port;
 	private boolean stop;
@@ -70,8 +50,10 @@ public class Server implements Runnable {
 	private long serviceTime;
 
 	private WebServer window;
-	private HashMap<String, IPlugin> plugins;
-
+	private HashMap<String, AbstractPlugin> plugins;
+	
+    public ClassLoader parentClassLoader = JavaClassLoader.class.getClassLoader();
+    public JavaClassLoader classLoader = new JavaClassLoader(parentClassLoader,new HashSet<String>());
 	/**
 	 * @param rootDirectory
 	 * @param port
@@ -84,12 +66,16 @@ public class Server implements Runnable {
 		this.connections = 0;
 		this.serviceTime = 0;
 		this.window = window;
-		this.plugins = new HashMap<String,IPlugin>();
-		this.requestHandlers = new HashMap<String, IRequestHandler>();
-		this.requestHandlers.put(Protocol.GET, new GetRequestHandler());
-		this.requestHandlers.put(Protocol.POST, new PostRequestHandler());
-		this.requestHandlers.put(Protocol.PUT, new PutRequestHandler());
-		this.requestHandlers.put(Protocol.DELETE, new DeleteRequestHandler());
+		this.plugins = new HashMap<String,AbstractPlugin>();
+		
+		 File dir = new File("src/pluginImp");
+		  File[] directoryListing = dir.listFiles();
+		  if (directoryListing != null) {
+		    for (File file : directoryListing) {
+		      uploadPlugin(Paths.get(file.getPath()));
+		    }
+		  } else {
+		  }
 	}
 
 	/**
@@ -110,14 +96,6 @@ public class Server implements Runnable {
 		return port;
 	}
 
-	/**
-	 * 
-	 * Get the handlers to use the code
-	 * 
-	 */
-	public HashMap<String, IRequestHandler> getHandlers() {
-		return requestHandlers;
-	}
 
 	/**
 	 * Returns connections serviced per second. Synchronized to be used in
@@ -160,7 +138,7 @@ public class Server implements Runnable {
 	 */
 	public void run() {
 		try {
-			PluginWatcher watcher = new PluginWatcher(this,rootDirectory);
+			PluginWatcher watcher = new PluginWatcher(this,"src/pluginImp");
 			new Thread(watcher).start();
 
 			this.welcomeSocket = new ServerSocket(port);
@@ -224,12 +202,12 @@ public class Server implements Runnable {
 	 */
 	public void removePlugin(Path filename) {
 		// TODO Auto-generated method stub
-		String file = filename.getFileName().toString();
-		int split = file.indexOf('.');
-		String name = file.substring(0,split);
-		if(!plugins.containsKey(name)){
-			plugins.remove(name);
-		}
+//		String file = filename.getFileName().toString();
+//		int split = file.indexOf('.');
+//		String name = file.substring(0,split);
+//		if(!plugins.containsKey(name)){
+//			plugins.remove(name);
+//		}
 	}
 
 	/**
@@ -239,47 +217,46 @@ public class Server implements Runnable {
 	public void uploadPlugin(Path filename) {
 		// TODO Auto-generated method stub
 		try {
-		JarClassLoader jarLoader = new JarClassLoader(filename.toString());
-		String file = filename.getFileName().toString();
-		int split = file.indexOf('.');
-		String name = file.substring(0,split);
-		if(!plugins.containsKey(name)){
-		Class c = jarLoader.loadClass(name, true);
-        Object o;
-		o = c.newInstance();
-        IPlugin plugin = (IPlugin) c.newInstance();
-        plugin.init(this.getRootDirectory());
-        plugins.put(name,plugin);
-       
-        writeFilePathToText(filename.toString());
+			//File file = new File(filename.toString());
+		this.classLoader = new JavaClassLoader(parentClassLoader, this.classLoader.loadedClasses);
+		String fileString = filename.getFileName().toString();
+		int split = fileString.indexOf('.');
+		String name = fileString.substring(0,split);
+		String className = "pluginImp." + name;
+		Class clazz;
+		if(this.plugins.containsKey(name)){
+			clazz=this.classLoader.reloadClass(name, className);
+		} else {
+		 clazz = this.classLoader.loadNewClass(name, className);
 		}
+		AbstractPlugin plugin = (AbstractPlugin) clazz.newInstance();
+		plugin.init(this.rootDirectory);
+		System.out.println("Loaded "+ name);
+		this.plugins.put(name, plugin);
+//		JarClassLoader jarLoader = new JarClassLoader(filename.toString());
+//		String file = filename.getFileName().toString();
+//		int split = file.indexOf('.');
+//		String name = file.substring(0,split);
+//		if(!plugins.containsKey(name)){
+//		Class c = jarLoader.loadClass(name, true);
+//        Object o;
+//		o = c.newInstance();
+//        IPlugin plugin = (IPlugin) c.newInstance();
+//		System.out.println(plugin.getName());
+//        plugin.init(this.getRootDirectory());
+//        plugins.put(name,plugin);
+//       
+//        writeFilePathToText(filename.toString());
+		//}
 		} catch (Exception e){
 			e.printStackTrace();
 		}
 }
-	
-	public void writeFilePathToText(String filepath) throws IOException{
-		try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(".\\plugins.txt", true)))) {
-		    out.println(filepath);
-		}catch (IOException e) {
-		    //exception handling left as an exercise for the reader
-		}
-	}
-
 	/**
 	 * @return
 	 */
-	public HashMap<String, IPlugin> getPlugins() {
+	public HashMap<String, AbstractPlugin> getPlugins() {
 		// TODO Auto-generated method stub
 		return this.plugins;
-	}
-
-	/**
-	 * @param filename
-	 */
-	public void reloadPlugin(Path filename) {
-		removePlugin(filename);
-		uploadPlugin(filename);
-		
 	}
 }

@@ -41,8 +41,8 @@ import protocol.Protocol;
  */
 public class FileDeleteGood extends IServlet{
 
-	public FileDeleteGood(String type,String root) {
-		super(type,root);
+	public FileDeleteGood(String root) {
+		super(root);
 	}
 
 	@Override
@@ -79,10 +79,5 @@ public class FileDeleteGood extends IServlet{
 			}
 		}
 		return HttpResponseFactory.create304NotModified(Protocol.CLOSE);
-	}
-
-	@Override
-	public String getName() {
-		return "FileGood";
 	}
 }

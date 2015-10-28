@@ -41,13 +41,13 @@ import protocol.Protocol;
  */
 public class FileGetGood extends IServlet{
 
-	public FileGetGood(String type,String root) {
-		super(type,root);
+	public FileGetGood(String root) {
+		super(root);
 	}
 	
 	@Override
 	public HttpResponse handleRequest(HttpRequest request) {
-		File file = new File(rootDirectory + "/good.txt");
+		File file = new File(rootDirectory + "/TestPlugin.html");
 		// Check if the file exists
 		if(file.exists()) {
 			if(file.isDirectory()) {
@@ -74,8 +74,4 @@ public class FileGetGood extends IServlet{
 		}
 	}
 
-	@Override
-	public String getName() {
-		return "FileGood";
-	}
 }
