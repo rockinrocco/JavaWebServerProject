@@ -21,10 +21,17 @@
  
 package server;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
 
 import AbstractPlugin.AbstractPlugin;
@@ -142,21 +149,34 @@ public class ConnectionHandler implements Runnable {
 			String rootDirectory = server.getRootDirectory();
 			String uri = request.getUri();
 			String[] paths = uri.split("/");
-			System.out.println("Looking for plugin for " + paths[1]);
+			System.out.print("PLUGIN " + paths[1]);
 			if(!request.getVersion().equalsIgnoreCase(Protocol.VERSION)) {
 				// Here you checked that the "Protocol.VERSION" string is not equal to the  
 				// "request.version" string ignoring the case of the letters in both strings
 				// TODO: Fill in the rest of the code here
 			}else if(plugins.containsKey(paths[1])) {
 				String newURI = paths[2];
-				System.out.println("Looking for SERVLET for  " + newURI);
+				System.out.print("  SERVLET  " + newURI);
 				if(paths.length>4){
 					response = HttpResponseFactory.create404NotFound(Protocol.CLOSE);
 				}else{
 //					for(int i=2;i<paths.length;i++){
 //						newURI+="/"+paths[i];
 //					}
-					
+					StringBuilder builder = new StringBuilder();
+					 java.util.Date date= new java.util.Date();
+					builder.append(date.getTime());
+					builder.append('\t');
+					builder.append(this.socket.getRemoteSocketAddress().toString());
+					builder.append('\t');
+					builder.append(paths[1] + "/" + paths[2] + "/" + request.getMethod());
+					try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)))) {
+					    out.println(builder.toString());
+					    //more code
+					    //more code
+					}catch (IOException e) {
+					    //exception handling left as an exercise for the reader
+					}
 					response = plugins.get(paths[1]).handleRequest(request, newURI,
 						server.getRootDirectory());
 				}

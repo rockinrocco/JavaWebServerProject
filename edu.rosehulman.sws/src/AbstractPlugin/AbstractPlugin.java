@@ -45,11 +45,11 @@ public abstract class AbstractPlugin implements Runnable{
 
 	public HttpResponse handleRequest(HttpRequest request, String uri, String rootDirectory){
 		String key=request.getMethod().toUpperCase()+":"+uri;
-		System.out.println("Uri:"+key);
+		System.out.print(" REQUEST-TYPE: "+request.getMethod() + "\n");
 		if(servlets.containsKey(key)){
-			System.out.println("found servlet");
 			return servlets.get(key).handleRequest(request);
 		}else{
+			System.out.println("Servlet Not Found");			
 			return HttpResponseFactory.create404NotFound(Protocol.CLOSE);
 		}
 	}

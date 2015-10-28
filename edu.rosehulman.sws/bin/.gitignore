@@ -1,9 +1,4 @@
 /server
-/TestPlugin
-/plugin
-/IPlugin
 /pluginImp
-/pluginDev
 /servlet
-/AbstractPlugin
-/protocol
+/pluginDev
