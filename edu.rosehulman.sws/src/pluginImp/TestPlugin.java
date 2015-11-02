@@ -26,8 +26,6 @@
  
 package pluginImp;
 
-import java.util.HashMap;
-import java.util.HashSet;
 
 import AbstractPlugin.AbstractPlugin;
 import servlet.FileDeleteGood;
@@ -35,7 +33,6 @@ import servlet.FileGetGood;
 import servlet.FilePostGood;
 import servlet.GetServlet3Page;
 import servlet.HttpWorks;
-import servlet.LoadHtmlPage;
 
 /**
  * 
@@ -52,17 +49,17 @@ public class TestPlugin extends AbstractPlugin{
 	@Override
 	public void init(String root) {
 		super.init(root);
-		addServlet("Servlet1","GET", new LoadHtmlPage(rootDirectory,"index.html"));
+		addServlet("Servlet1","GET", new FileGetGood(rootDirectory));
 		addServlet("Servlet1","POST",new FilePostGood(rootDirectory));
 		addServlet("Servlet1","PUT",new FileDeleteGood(rootDirectory));
 		addServlet("Servlet1","DELETE",new HttpWorks(rootDirectory));
 		
-		addServlet("Servlet2","GET", new LoadHtmlPage(rootDirectory,"servlet2.html"));
+		addServlet("Servlet2","GET", new FileGetGood(rootDirectory));
 		addServlet("Servlet2","POST",new FilePostGood(rootDirectory));
 		addServlet("Servlet2","PUT",new FileDeleteGood(rootDirectory));
 		addServlet("Servlet2","DELETE",new HttpWorks(rootDirectory));
 		
-		addServlet("Servlet3","GET", new LoadHtmlPage(rootDirectory,"servlet3.html"));
+		addServlet("Servlet3","GET", new GetServlet3Page(rootDirectory));
 		addServlet("Servlet3","POST",new FilePostGood(rootDirectory));
 		addServlet("Servlet3","PUT",new FileDeleteGood(rootDirectory));
 		addServlet("Servlet3","DELETE",new HttpWorks(rootDirectory));

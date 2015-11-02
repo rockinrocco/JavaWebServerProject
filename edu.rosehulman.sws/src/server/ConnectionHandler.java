@@ -167,7 +167,7 @@ public class ConnectionHandler implements Runnable {
 					 java.util.Date date= new java.util.Date();
 					builder.append(date.getTime());
 					builder.append('\t');
-					builder.append(this.socket.getRemoteSocketAddress().toString());
+					builder.append(this.socket.toString());
 					builder.append('\t');
 					builder.append(paths[1] + "/" + paths[2] + "/" + request.getMethod());
 					try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)))) {
