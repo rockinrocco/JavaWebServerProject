@@ -311,7 +311,7 @@ public class Server implements Runnable {
 	    public void run() {
 	    	while(true){
 	    		try {
-	    			Thread.sleep(1000*5);
+	    			Thread.sleep(1000*5*60);
 	    			serv.resetAttempts();
 	    		} catch (InterruptedException e) {
 	    			e.printStackTrace();
