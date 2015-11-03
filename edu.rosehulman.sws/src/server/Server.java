@@ -24,7 +24,10 @@ package server;
 import gui.WebServer;
 import jarLoader.JarClassLoader;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -147,6 +150,9 @@ public class Server implements Runnable {
 		try {
 			PluginWatcher watcher = new PluginWatcher(this,"web/plugins");
 			new Thread(watcher).start();
+			Clock clock = new Clock(this);
+			
+			new Thread(clock).start();
 
 			this.welcomeSocket = new ServerSocket(port);
 			// Now keep welcoming new connections until stop flag is set to true
@@ -154,9 +160,12 @@ public class Server implements Runnable {
 				// Listen for incoming socket connection
 				// This method block until somebody makes a request
 				Socket connectionSocket = this.welcomeSocket.accept();
-				String sockID = connectionSocket.getRemoteSocketAddress().toString();
+				String sockID = connectionSocket.getInetAddress().toString();
 				System.out.println("SOCK" +sockID);
 				if(blacklisted.contains(sockID)){
+					try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)))) {
+					out.write("BLACKLISTED " + sockID + " TOO MANY CONNECTION ATTEMPTS");	
+					}
 					continue;
 				}
 				int attCount = 1;
@@ -170,6 +179,7 @@ public class Server implements Runnable {
 					blacklisted.add(sockID);
 					continue;
 				}
+				System.out.println(attCount);
 //				System.out.println(attempts.get(sockID)+"");
 				// Come out of the loop if the stop flag is set
 				if (this.stop)
@@ -280,6 +290,8 @@ public class Server implements Runnable {
 	 */
 	public void resetAttempts() {
 		this.attempts.clear();
+		this.blacklisted.clear();
+		System.out.println("I reset the attempts and blacklist");
 	}
 	/**
 	 * @return
@@ -299,7 +311,7 @@ public class Server implements Runnable {
 	    public void run() {
 	    	while(true){
 	    		try {
-	    			Thread.sleep(1000*60*5);
+	    			Thread.sleep(1000*5);
 	    			serv.resetAttempts();
 	    		} catch (InterruptedException e) {
 	    			e.printStackTrace();
