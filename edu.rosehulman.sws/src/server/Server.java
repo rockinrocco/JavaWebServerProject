@@ -53,6 +53,7 @@ public class Server implements Runnable {
 	private HashMap<String, AbstractPlugin> plugins;
 	private HashMap<String, Integer> attempts;
 	private HashSet<String> blacklisted;
+	private final int BAN_THRESHOLD = 50;
 	
     public ClassLoader parentClassLoader = JavaClassLoader.class.getClassLoader();
     public JavaClassLoader classLoader = new JavaClassLoader(parentClassLoader,new HashSet<String>());
@@ -149,7 +150,23 @@ public class Server implements Runnable {
 				// Listen for incoming socket connection
 				// This method block until somebody makes a request
 				Socket connectionSocket = this.welcomeSocket.accept();
-
+				String sockID = connectionSocket.getRemoteSocketAddress().toString();
+				System.out.println("SOCK" +sockID);
+				if(blacklisted.contains(sockID)){
+					continue;
+				}
+				int attCount = 1;
+				if(attempts.containsKey(sockID)){
+					attCount = attempts.get(sockID)+1;
+					attempts.put(sockID, attCount);
+				}else{
+					attempts.put(sockID, attCount);
+				}
+				if(attCount>=BAN_THRESHOLD){
+					blacklisted.add(sockID);
+					continue;
+				}
+				System.out.println(attempts.get(sockID)+"");
 				// Come out of the loop if the stop flag is set
 				if (this.stop)
 					break;
