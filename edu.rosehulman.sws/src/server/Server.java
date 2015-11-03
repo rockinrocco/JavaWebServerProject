@@ -24,7 +24,10 @@ package server;
 import gui.WebServer;
 import jarLoader.JarClassLoader;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -154,9 +157,12 @@ public class Server implements Runnable {
 				// Listen for incoming socket connection
 				// This method block until somebody makes a request
 				Socket connectionSocket = this.welcomeSocket.accept();
-				String sockID = connectionSocket.getRemoteSocketAddress().toString();
+				String sockID = connectionSocket.getInetAddress().toString();
 				System.out.println("SOCK" +sockID);
 				if(blacklisted.contains(sockID)){
+					try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)))) {
+					out.write("BLACKLISTED " + sockID + " TOO MANY CONNECTION ATTEMPTS");	
+					}
 					continue;
 				}
 				int attCount = 1;

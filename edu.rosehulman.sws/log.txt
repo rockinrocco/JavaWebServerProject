@@ -10,3 +10,13 @@
 1446047048959	Socket[addr=/0:0:0:0:0:0:0:1,port=31224,localport=8080]	TestPlugin/Servlet1/DELETE
 1446047056108	Socket[addr=/0:0:0:0:0:0:0:1,port=31225,localport=8080]	TestPlugin/Servlet1jj/GET
 1446134157471	Socket[addr=/0:0:0:0:0:0:0:1,port=31304,localport=8080]	TestPlugin/Servlet1/GET
+1446520933922	Socket[addr=/0:0:0:0:0:0:0:1,port=34695,localport=8080]	TestPlugin/Servlet1/GET
+1446521604705	Socket[addr=/0:0:0:0:0:0:0:1,port=35574,localport=8080]	TestPlugin/Servlet1/GET
+1446521753393	Socket[addr=/0:0:0:0:0:0:0:1,port=35722,localport=8080]	TestPlugin/Servlet1/GET
+1446521764415	Socket[addr=/192.168.1.114,port=35725,localport=8080]	TestPlugin/Servletk/GET
+1446521994392	Socket[addr=/0:0:0:0:0:0:0:1,port=36102,localport=8080]	TestPlugin/Servlet1/GET
+1446522001596	Socket[addr=/192.168.1.114,port=36105,localport=8080]	TestPlugin/Servletk/GET
+1446522045886	Socket[addr=/127.0.0.1,port=36198,localport=8080]	TestPlugin/Servlet1/GET
+1446522145689	Socket[addr=/0:0:0:0:0:0:0:1,port=36326,localport=8080]	TestPlugin/Servlet1/GET
+1446522153655	Socket[addr=/127.0.0.1,port=36328,localport=8080]	TestPlugin/Servlet1/GET
+1446522167645	Socket[addr=/192.168.1.114,port=36352,localport=8080]	TestPlugin/Servletk/GET
