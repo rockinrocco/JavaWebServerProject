@@ -64,6 +64,8 @@ public class Server implements Runnable {
 	 * @param port
 	 */
 	public Server(String rootDirectory, int port, WebServer window) {
+		this.attempts = new HashMap<String, Integer>();
+		this.blacklisted = new HashSet<String>();
 		this.rootDirectory = rootDirectory;
 			// We obtain the file system of the Path
 		this.port = port;
@@ -168,7 +170,7 @@ public class Server implements Runnable {
 					blacklisted.add(sockID);
 					continue;
 				}
-				System.out.println(attempts.get(sockID)+"");
+//				System.out.println(attempts.get(sockID)+"");
 				// Come out of the loop if the stop flag is set
 				if (this.stop)
 					break;
