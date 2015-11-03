@@ -274,7 +274,13 @@ public class Server implements Runnable {
 //        writeFilePathToText(filename.toString());
 		//}
 	
-}
+	}	
+	/**
+	 * Resets the attempts resource
+	 */
+	public void resetAttempts() {
+		this.attempts.clear();
+	}
 	/**
 	 * @return
 	 */
@@ -282,4 +288,24 @@ public class Server implements Runnable {
 		// TODO Auto-generated method stub
 		return this.plugins;
 	}
+	public class Clock implements Runnable {
+
+	    private Server serv;
+
+	    public Clock(Server serv) {
+	        this.serv = serv;
+	    }
+
+	    public void run() {
+	    	while(true){
+	    		try {
+	    			Thread.sleep(1000*60*5);
+	    			serv.resetAttempts();
+	    		} catch (InterruptedException e) {
+	    			e.printStackTrace();
+	    		}
+	    	}
+	    }
+	}
+
 }
