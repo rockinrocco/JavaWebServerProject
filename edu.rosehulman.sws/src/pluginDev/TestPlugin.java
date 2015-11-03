@@ -28,6 +28,7 @@ package pluginDev;
 
 
 import AbstractPlugin.AbstractPlugin;
+import servlet.ErrorThrower;
 import servlet.FileDeleteGood;
 import servlet.FileGetGood;
 import servlet.FilePostGood;
@@ -49,6 +50,8 @@ public class TestPlugin extends AbstractPlugin{
 	@Override
 	public void init(String root) {
 		super.init(root);
+		addServlet("Error","GET", new ErrorThrower(rootDirectory));
+		
 		addServlet("Servlet1","GET", new FileGetGood(rootDirectory));
 		addServlet("Servlet1","POST",new FilePostGood(rootDirectory));
 		addServlet("Servlet1","PUT",new FileDeleteGood(rootDirectory));
