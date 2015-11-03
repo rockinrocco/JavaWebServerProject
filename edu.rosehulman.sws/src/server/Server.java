@@ -22,6 +22,7 @@
 package server;
 
 import gui.WebServer;
+import jarLoader.JarClassLoader;
 
 import java.io.File;
 import java.net.InetAddress;
@@ -31,6 +32,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.HashSet;
+
 import AbstractPlugin.AbstractPlugin;
 
 /**
@@ -71,7 +73,7 @@ public class Server implements Runnable {
 		this.window = window;
 		this.plugins = new HashMap<String,AbstractPlugin>();
 		
-		 File dir = new File("src/pluginImp");
+		 File dir = new File("web/plugins");
 		  File[] directoryListing = dir.listFiles();
 		  if (directoryListing != null) {
 		    for (File file : directoryListing) {
@@ -141,7 +143,7 @@ public class Server implements Runnable {
 	 */
 	public void run() {
 		try {
-			PluginWatcher watcher = new PluginWatcher(this,"src/pluginImp");
+			PluginWatcher watcher = new PluginWatcher(this,"web/plugins");
 			new Thread(watcher).start();
 
 			this.welcomeSocket = new ServerSocket(port);
@@ -234,42 +236,42 @@ public class Server implements Runnable {
 	 * This function get called when a new file is created or updated
 	 */
 	public void uploadPlugin(Path filename) {
-		// TODO Auto-generated method stub
-		try {
 			//File file = new File(filename.toString());
-		this.classLoader = new JavaClassLoader(parentClassLoader, this.classLoader.loadedClasses);
-		String fileString = filename.getFileName().toString();
-		int split = fileString.indexOf('.');
-		String name = fileString.substring(0,split);
-		String className = "pluginImp." + name;
-		Class clazz;
-		if(this.plugins.containsKey(name)){
-			clazz=this.classLoader.reloadClass(name, className);
-		} else {
-		 clazz = this.classLoader.loadNewClass(name, className);
+//		this.classLoader = new JavaClassLoader(parentClassLoader, this.classLoader.loadedClasses);
+//		String fileString = filename.getFileName().toString();
+//		int split = fileString.indexOf('.');
+//		String name = fileString.substring(0,split);
+//		String className = "pluginImp." + name;
+//		Class clazz;
+//		if(this.plugins.containsKey(name)){
+//			clazz=this.classLoader.reloadClass(name, className);
+//		} else {
+//		 clazz = this.classLoader.loadNewClass(name, className);
+//		}
+//		AbstractPlugin plugin = (AbstractPlugin) clazz.newInstance();
+//		plugin.init(this.rootDirectory);
+//		System.out.println("Loaded "+ name);
+//		this.plugins.put(name, plugin);
+		try{
+		JarClassLoader jarLoader = new JarClassLoader(filename.toString());
+		String file = filename.getFileName().toString();
+		int split = file.indexOf('.');
+		String name = file.substring(0,split);
+		if(!plugins.containsKey(name)){
+		Class c = jarLoader.loadClass(name, true);
+        Object o;
+		o = c.newInstance();
+        AbstractPlugin plugin = (AbstractPlugin) c.newInstance();
+		System.out.println(plugin.getName());
+        plugin.init(this.getRootDirectory());
+        plugins.put(name,plugin);
 		}
-		AbstractPlugin plugin = (AbstractPlugin) clazz.newInstance();
-		plugin.init(this.rootDirectory);
-		System.out.println("Loaded "+ name);
-		this.plugins.put(name, plugin);
-//		JarClassLoader jarLoader = new JarClassLoader(filename.toString());
-//		String file = filename.getFileName().toString();
-//		int split = file.indexOf('.');
-//		String name = file.substring(0,split);
-//		if(!plugins.containsKey(name)){
-//		Class c = jarLoader.loadClass(name, true);
-//        Object o;
-//		o = c.newInstance();
-//        IPlugin plugin = (IPlugin) c.newInstance();
-//		System.out.println(plugin.getName());
-//        plugin.init(this.getRootDirectory());
-//        plugins.put(name,plugin);
-//       
+		} catch(Exception e){
+			System.out.println("Error adding plugin");
+		}
 //        writeFilePathToText(filename.toString());
 		//}
-		} catch (Exception e){
-			e.printStackTrace();
-		}
+	
 }
 	/**
 	 * @return

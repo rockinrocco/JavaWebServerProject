@@ -24,7 +24,7 @@
  * http://clarkson.edu/~rupakhcr
  */
  
-package pluginImp;
+
 
 
 import AbstractPlugin.AbstractPlugin;
