@@ -51,6 +51,8 @@ public class Server implements Runnable {
 
 	private WebServer window;
 	private HashMap<String, AbstractPlugin> plugins;
+	private HashMap<String, Integer> attempts;
+	private HashSet<String> blacklisted;
 	
     public ClassLoader parentClassLoader = JavaClassLoader.class.getClassLoader();
     public JavaClassLoader classLoader = new JavaClassLoader(parentClassLoader,new HashSet<String>());

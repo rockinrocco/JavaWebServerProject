@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="lib" path="edu.rosehulman.sws.testutility/lib/swing-layout-1.0.4.jar"/>
+	<classpathentry kind="lib" path="edu.rosehulman.sws/web/plugins/BlueRock.jar"/>
+	<classpathentry kind="lib" path="edu.rosehulman.sws/web/rmiclient.jar"/>
+	<classpathentry kind="lib" path="edu.rosehulman.sws/web/rmiserver.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="edu.rosehulman.sws.testutility/bin"/>
+</classpath>
