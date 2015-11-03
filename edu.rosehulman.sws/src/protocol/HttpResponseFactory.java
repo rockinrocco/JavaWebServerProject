@@ -202,4 +202,18 @@ public class HttpResponseFactory {
 		
 		return response;
 	}
+
+	/**
+	 * @param close
+	 * @return
+	 */
+	public static HttpResponse create500ServerError(String connection) {
+		HttpResponse response = new HttpResponse(Protocol.VERSION, Protocol.SERVER_ERROR_CODE, 
+				Protocol.SERVER_ERROR_TEXT, new HashMap<String, String>(), null);
+		
+		// Lets fill up header fields with more information
+		fillGeneralHeader(response, connection);
+		
+		return response;
+	}
 }

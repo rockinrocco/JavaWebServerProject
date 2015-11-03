@@ -7,4 +7,36 @@
 1446047046967	Socket[addr=/0:0:0:0:0:0:0:1,port=31223,localport=8080]	TestPlugin/Servlet1/PUT
 1446047048959	Socket[addr=/0:0:0:0:0:0:0:1,port=31224,localport=8080]	TestPlugin/Servlet1/DELETE
 1446047056108	Socket[addr=/0:0:0:0:0:0:0:1,port=31225,localport=8080]	TestPlugin/Servlet1jj/GET
-1446134157471	Socket[addr=/0:0:0:0:0:0:0:1,port=31304,localport=8080]	TestPlugin/Servlet1/GET
+1446134157471	Socket[addr=/0:0:0:0:0:0:0:1,port=31304,localport=8080]	TestPlugin/Servlet1/GET1446570149672	Socket[addr=/0:0:0:0:0:0:0:1,port=49346,localport=8080]	TestPlugin/Error/GET
+1446570153156	Socket[addr=/0:0:0:0:0:0:0:1,port=49348,localport=8080]	TestPlugin/Error/GET
+1446570156175	Socket[addr=/0:0:0:0:0:0:0:1,port=49350,localport=8080]	TestPlugin/Error/GET
+1446570156878	Socket[addr=/0:0:0:0:0:0:0:1,port=49352,localport=8080]	TestPlugin/Error/GET
+1446570157202	Socket[addr=/0:0:0:0:0:0:0:1,port=49354,localport=8080]	TestPlugin/Error/GET
+1446570157432	Socket[addr=/0:0:0:0:0:0:0:1,port=49356,localport=8080]	TestPlugin/Error/GET
+1446570157636	Socket[addr=/0:0:0:0:0:0:0:1,port=49358,localport=8080]	TestPlugin/Error/GET
+1446570157833	Socket[addr=/0:0:0:0:0:0:0:1,port=49360,localport=8080]	TestPlugin/Error/GET
+1446570158067	Socket[addr=/0:0:0:0:0:0:0:1,port=49362,localport=8080]	TestPlugin/Error/GET
+1446570158227	Socket[addr=/0:0:0:0:0:0:0:1,port=49364,localport=8080]	TestPlugin/Error/GET
+1446570158724	Socket[addr=/0:0:0:0:0:0:0:1,port=49366,localport=8080]	TestPlugin/Error/GET
+1446570158781	Socket[addr=/0:0:0:0:0:0:0:1,port=49367,localport=8080]	TestPlugin/Error/GET
+1446570158796	Socket[addr=/0:0:0:0:0:0:0:1,port=49369,localport=8080]	TestPlugin/Error/GET
+1446570158832	Socket[addr=/0:0:0:0:0:0:0:1,port=49371,localport=8080]	TestPlugin/Error/GET
+1446570158865	Socket[addr=/0:0:0:0:0:0:0:1,port=49373,localport=8080]	TestPlugin/Error/GET
+1446570158898	Socket[addr=/0:0:0:0:0:0:0:1,port=49375,localport=8080]	TestPlugin/Error/GET
+1446570158927	Socket[addr=/0:0:0:0:0:0:0:1,port=49377,localport=8080]	TestPlugin/Error/GET
+1446570158954	Socket[addr=/0:0:0:0:0:0:0:1,port=49379,localport=8080]	TestPlugin/Error/GET
+1446570158985	Socket[addr=/0:0:0:0:0:0:0:1,port=49381,localport=8080]	TestPlugin/Error/GET
+1446570159016	Socket[addr=/0:0:0:0:0:0:0:1,port=49384,localport=8080]	TestPlugin/Error/GET
+1446570159048	Socket[addr=/0:0:0:0:0:0:0:1,port=49386,localport=8080]	TestPlugin/Error/GET
+1446570159089	Socket[addr=/0:0:0:0:0:0:0:1,port=49387,localport=8080]	TestPlugin/Error/GET
+1446570159122	Socket[addr=/0:0:0:0:0:0:0:1,port=49389,localport=8080]	TestPlugin/Error/GET
+1446570159156	Socket[addr=/0:0:0:0:0:0:0:1,port=49391,localport=8080]	TestPlugin/Error/GET
+1446570159190	Socket[addr=/0:0:0:0:0:0:0:1,port=49392,localport=8080]	TestPlugin/Error/GET
+1446570159221	Socket[addr=/0:0:0:0:0:0:0:1,port=49394,localport=8080]	TestPlugin/Error/GET
+BLACKLISTED /0:0:0:0:0:0:0:1 TOO MANY CONNECTION ATTEMPTSBLACKLISTED /0:0:0:0:0:0:0:1 TOO MANY CONNECTION ATTEMPTSBLACKLISTED /0:0:0:0:0:0:0:1 TOO MANY CONNECTION ATTEMPTSBLACKLISTED /0:0:0:0:0:0:0:1 TOO MANY CONNECTION ATTEMPTSBLACKLISTED /0:0:0:0:0:0:0:1 TOO MANY CONNECTION ATTEMPTSBLACKLISTED /0:0:0:0:0:0:0:1 TOO MANY CONNECTION ATTEMPTSBLACKLISTED /0:0:0:0:0:0:0:1 TOO MANY CONNECTION ATTEMPTSBLACKLISTED /0:0:0:0:0:0:0:1 TOO MANY CONNECTION ATTEMPTSBLACKLISTED /0:0:0:0:0:0:0:1 TOO MANY CONNECTION ATTEMPTSBLACKLISTED /0:0:0:0:0:0:0:1 TOO MANY CONNECTION ATTEMPTSBLACKLISTED /0:0:0:0:0:0:0:1 TOO MANY CONNECTION ATTEMPTSBLACKLISTED /0:0:0:0:0:0:0:1 TOO MANY CONNECTION ATTEMPTSBLACKLISTED /0:0:0:0:0:0:0:1 TOO MANY CONNECTION ATTEMPTSBLACKLISTED /0:0:0:0:0:0:0:1 TOO MANY CONNECTION ATTEMPTSBLACKLISTED /0:0:0:0:0:0:0:1 TOO MANY CONNECTION ATTEMPTSBLACKLISTED /0:0:0:0:0:0:0:1 TOO MANY CONNECTION ATTEMPTSBLACKLISTED /0:0:0:0:0:0:0:1 TOO MANY CONNECTION ATTEMPTS1446570329396	Socket[addr=/0:0:0:0:0:0:0:1,port=49574,localport=8080]	TestPlugin/Error/GET
+1446570696419	Socket[addr=/0:0:0:0:0:0:0:1,port=49795,localport=8080]	TestPlugin/Error/GET
+1446570703722	Socket[addr=/0:0:0:0:0:0:0:1,port=49798,localport=8080]	TestPlugin/Error/GET
+1446570766198	Socket[addr=/0:0:0:0:0:0:0:1,port=49836,localport=8080]	TestPlugin/Error/GET
+1446570796121	Socket[addr=/0:0:0:0:0:0:0:1,port=49839,localport=8080]	TestPlugin/Error/GET
+1446570838247	Socket[addr=/0:0:0:0:0:0:0:1,port=49871,localport=8080]	TestPlugin/Error/GET
+1446570876324	Socket[addr=/0:0:0:0:0:0:0:1,port=49902,localport=8080]	TestPlugin/Error/GET
