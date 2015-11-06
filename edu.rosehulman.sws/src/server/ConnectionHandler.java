@@ -182,52 +182,12 @@ public class ConnectionHandler implements Runnable {
 						server.getRootDirectory());
 				}
 			}
-			
-			
-//			else if(requestHandlers.containsKey(request.getMethod().toUpperCase())) {
-//				requestHandlers.get(request.getMethod().toUpperCase()).handleRequest(request,
-//						server.getRootDirectory());
-//				// Handling GET request here
-//				// Get relative URI path from request
-////				String uri = request.getUri();
-//				// Get root directory path from server
-//				String rootDirectory = server.getRootDirectory();
-//				// Combine them together to form absolute file path
-//				File file = new File(rootDirectory + uri);
-//				// Check if the file exists
-//				if(file.exists()) {
-//					if(file.isDirectory()) {
-//						// Look for default index.html file in a directory
-//						String location = rootDirectory + uri + System.getProperty("file.separator") + Protocol.DEFAULT_FILE;
-//						file = new File(location);
-//						if(file.exists()) {
-//							// Lets create 200 OK response
-//							response = HttpResponseFactory.create200OK(file, Protocol.CLOSE);
-//						}
-//						else {
-//							// File does not exist so lets create 404 file not found code
-//							response = HttpResponseFactory.create404NotFound(Protocol.CLOSE);
-//						}
-//					}
-//					else { // Its a file
-//						// Lets create 200 OK response
-//						response = HttpResponseFactory.create200OK(file, Protocol.CLOSE);
-//					}
-//				}
-//				else {
-//					// File does not exist so lets create 404 file not found code
-//					response = HttpResponseFactory.create404NotFound(Protocol.CLOSE);
-//				}
-//			}
 		}
 		catch(Exception e) {
 			e.printStackTrace();
+			response = HttpResponseFactory.create500ServerError(Protocol.CLOSE);
 		}
 		
-
-		// TODO: So far response could be null for protocol version mismatch.
-		// So this is a temporary patch for that problem and should be removed
-		// after a response object is created for protocol version mismatch.
 		if(response == null) {
 			response = HttpResponseFactory.create400BadRequest(Protocol.CLOSE);
 		}
@@ -235,7 +195,6 @@ public class ConnectionHandler implements Runnable {
 		try{
 			// Write response and we are all done so close the socket
 			response.write(outStream);
-//			System.out.println(response);
 			socket.close();
 		}
 		catch(Exception e){
