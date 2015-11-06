@@ -40,6 +40,7 @@ public class HttpResponse {
 	private String phrase;
 	private Map<String, String> header;
 	private File file;
+	private String JSON;
 
 	
 	/**
@@ -57,6 +58,13 @@ public class HttpResponse {
 		this.phrase = phrase;
 		this.header = header;
 		this.file = file;
+	}
+	public HttpResponse(String version, int status, String phrase, Map<String, String> header, String JSON, File file) {
+		this.version = version;
+		this.status = status;
+		this.phrase = phrase;
+		this.header = header;
+		this.JSON = JSON;
 	}
 
 	/**
@@ -155,7 +163,11 @@ public class HttpResponse {
 			// Close the file input stream, we are done reading
 			inStream.close();
 		}
-		
+		//we are sending JSON
+		if(this.JSON != null){
+			out.write(this.JSON.getBytes());
+			System.out.println(this.JSON);
+		}
 		// Flush the data so that outStream sends everything through the socket 
 		out.flush();
 	}

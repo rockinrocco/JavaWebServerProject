@@ -92,6 +92,24 @@ public class HttpResponseFactory {
 		return response;
 	}
 	
+	public static HttpResponse create200OK(String JSON, String connection) {
+		HttpResponse response = new HttpResponse(Protocol.VERSION, Protocol.OK_CODE, 
+				Protocol.OK_TEXT, new HashMap<String, String>(), JSON, null);
+		
+		// Lets fill up header fields with more information
+		fillGeneralHeader(response, connection);
+		
+		// Lets get content length in bytes
+		long length = JSON.length();
+		response.put(Protocol.CONTENT_LENGTH, length + "");
+	
+		response.put(Protocol.CONTENT_TYPE, "application/json");
+		
+		
+		return response;
+	}
+
+	
 	public static HttpResponse create200OK(String connection) {
 		HttpResponse response = new HttpResponse(Protocol.VERSION, Protocol.OK_CODE, 
 				Protocol.OK_TEXT, new HashMap<String, String>(), null);

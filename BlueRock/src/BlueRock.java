@@ -30,6 +30,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import AbstractPlugin.AbstractPlugin;
+import servlet.AlcoholLog;
+import servlet.DrinkStats;
 import servlet.FileDeleteGood;
 import servlet.FileGetGood;
 import servlet.FilePostGood;
@@ -46,15 +48,21 @@ public class BlueRock extends AbstractPlugin{
 	/**
 	 * @param root
 	 */
+	public AlcoholLog log;
+	public DrinkStats stats;
+
 	public BlueRock() {
 	}
 
 	@Override
 	public void init(String root) {
 		super.init(root);
-		addServlet("Servlet1","GET", new LoadHtmlPage(rootDirectory, "blueRock.html"));
-
-		addServlet("Servlet2","GET", new LoadHtmlPage(rootDirectory, "blueRock.html"));
+		log = new AlcoholLog(root);
+		addServlet("Home","GET", new LoadHtmlPage(rootDirectory, "blueRock.html"));
+		addServlet("amIDrunk","GET", log);
+		addServlet("addDrink","PUT", log);
+		addServlet("editDrink","POST", log);
+		addServlet("resetList","DELETE", log);
 
 	}
 

@@ -1,4 +1,6 @@
 /*
+ * DrinkStats.java
+ * Nov 5, 2015
  *
  * Simple Web Server (SWS) for EE407/507 and CS455/555
  * 
@@ -24,56 +26,23 @@
  * http://clarkson.edu/~rupakhcr
  */
  
-package pluginDev;
-
-import java.util.HashMap;
-import java.util.HashSet;
-
-import AbstractPlugin.AbstractPlugin;
-import servlet.FileDeleteGood;
-import servlet.FileGetGood;
-import servlet.FilePostGood;
-import servlet.GetServlet3Page;
-import servlet.HttpWorks;
-import servlet.LoadHtmlPage;
+package servlet;
 
 /**
  * 
- * @author Matt Rocco and Paul Bliudzius
+ * @author Chandan R. Rupakheti (rupakhcr@clarkson.edu)
  */
-public class BlueRock extends AbstractPlugin{
+public class DrinkStats {
 
-	/**
-	 * @param root
-	 */
-	public BlueRock() {
+	public String name;
+	public int weight;
+	public int count;
+	public boolean isMale;
+	
+	DrinkStats(String name, int w, int c, boolean isMale){
+		this.name = name;
+		this.weight = w;
+		this.count = c;
+		this.isMale = isMale;	
 	}
-
-	@Override
-	public void init(String root) {
-		super.init(root);
-		addServlet("Servlet1","GET", new LoadHtmlPage(rootDirectory, "blueRock.html"));
-
-		addServlet("Servlet2","GET", new LoadHtmlPage(rootDirectory, "blueRock.html"));
-
-	}
-
-	@Override
-	public void run() {
-
-	}
-
-	@Override
-	public String getName() {
-		return "BlueRock";
-	}
-
-	/**
-	 * @return
-	 */
-	public char[] getClassPath() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
