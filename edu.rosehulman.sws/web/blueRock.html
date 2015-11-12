@@ -34,15 +34,23 @@ body{
   background-color:#F0EFEE;
 }
 </style>
+
+
 <script>
+var stats;
 function submitDelete() {
 
   $("#hiddenPic").hide();
+  
     $.ajax({
         url: "resetList",
         type: 'DELETE',
-        data: JSON.stringify($("#text").val()),
-        success: function(result) {}
+        data: JSON.stringify(stats),
+        success: function(result) {
+        stats = result;
+        console.log(result)
+        $("#bacArea").html("Estimated BAC: 0.00");
+        }
     });
 }
 
@@ -85,7 +93,10 @@ function submitPut() {
         type: 'PUT',
         data: json,
         success: function(result) {
+             console.log(result)
+        
             // Do something with the result
+            stats = result;
         }
     });
     setTimeout(function() {
@@ -100,10 +111,21 @@ function submitPost() {
     $.ajax({
         url: "editDrink",
         type: 'POST',
-        data: JSON.stringify($("#text").val()),
-
+        data: JSON.stringify(stats),
         success: function(result) {
             // Do something with the result
+           console.log(result)
+         
+            stats = result;
+            var currentBAC = (result.count * 10 * 0.048) //assuming 0.05 alc for each drink
+            currentBAC = (currentBAC * 6 / result.weight);
+            $("#bacArea").html("Estimated BAC: " + currentBAC.toFixed(3))
+
+            if(currentBAC >= 0.08){
+            $("#bacArea").html("Estimated BAC: " + currentBAC.toFixed(3) + "<br>" + "<h3> CONGRATULATIONS </h3>")
+
+              $("#hiddenPic").show()
+            }
         }
     });
 }
@@ -114,15 +136,7 @@ function submitGet() {
         type: 'GET',
         success: function(result) {
             console.log(result)
-            var currentBAC = (result.count * 10 * 0.048) //assuming 0.05 alc for each drink
-            currentBAC = (currentBAC * 6 / result.weight);
-            $("#bacArea").html("Estimated BAC: " + currentBAC.toFixed(3))
-
-            if(currentBAC >= 0.08){
-            $("#bacArea").html("Estimated BAC: " + currentBAC.toFixed(3) + "<br>" + "<h3> CONGRATULATIONS </h3>")
-
-              $("#hiddenPic").show()
-            }
+            $("#bacArea").html("Drink a " + result + " next");
         }
     });
 }
@@ -179,7 +193,7 @@ function submitGet() {
             <img id="hiddenPic" src="http://lowbear.com/tempPlugin/20150907_193944.jpg"></img>
             <br>
             <br>
-            <button class="btn btn-primary" onclick="submitGet()"> What's my BAC? (sends a get request to /BlueRock/getDrink)</button>
+            <button class="btn btn-primary" onclick="submitGet()"> What should I drink next? (sends a get request to /BlueRock/getDrink)</button>
             <br>
             <br>
             <button class="btn btn-primary" onclick="submitPost()"> Add a drink (sends a POST request to BlueRock/editDrink)</button>

@@ -178,24 +178,22 @@ public class HttpRequest {
 	@Override
 	public String toString() {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("----------- Header ----------------\n");
 		buffer.append(this.method);
 		buffer.append(Protocol.SPACE);
 		buffer.append(this.uri);
 		buffer.append(Protocol.SPACE);
 		buffer.append(this.version);
-		buffer.append(Protocol.LF);
+		buffer.append(Protocol.CRLF);
 		
 		for(Map.Entry<String, String> entry : this.header.entrySet()) {
 			buffer.append(entry.getKey());
 			buffer.append(Protocol.SEPERATOR);
 			buffer.append(Protocol.SPACE);
 			buffer.append(entry.getValue());
-			buffer.append(Protocol.LF);
+			buffer.append(Protocol.CRLF);
 		}
-		buffer.append("------------- Body ---------------\n");
+		buffer.append(Protocol.LF);
 		buffer.append(this.body);
-		buffer.append("----------------------------------\n");
 		return buffer.toString();
 	}
 }

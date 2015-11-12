@@ -28,6 +28,9 @@
  
 package LoadBalancer;
 
+import java.util.ArrayList;
+import java.util.Scanner;
+
 /**
  * 
  * @author Chandan R. Rupakheti (rupakhcr@clarkson.edu)
@@ -40,9 +43,26 @@ public class LoadBalancerRunner {
 	public static void main(String[] args) {
 
 		
-		System.out.println("Please start ");
-		//LoadBalancer balancer = new LoadBalancer();
+		System.out.println("Load balancer will run on 8080");
+		ArrayList<Integer> servers = new ArrayList<Integer>();
+		int num;
+		Scanner in = new Scanner(System.in);
+		int i= 0;
+		System.out.println("Enter the ports for your servers. Type 0 to quit");
+		while(true){
+			i++;
+			System.out.print("Server " + i +": ");
+			num = in.nextInt();
+			if(num == 0){
+				break;
+			}
+			servers.add(num);
+		}
+		LoadBalancer balancer = new LoadBalancer(servers,8080);
+		
+		new Thread(balancer).start();
+		
+		
 
 	}
-
 }

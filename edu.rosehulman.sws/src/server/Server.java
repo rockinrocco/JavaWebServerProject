@@ -27,6 +27,7 @@ import jarLoader.JarClassLoader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -56,36 +57,33 @@ public class Server implements Runnable {
 
 	private WebServer window;
 	private HashMap<String, AbstractPlugin> plugins;
-	private HashMap<String, Integer> attempts;
-	private HashSet<String> blacklisted;
-	private final int BAN_THRESHOLD = 50;
-	
-    public ClassLoader parentClassLoader = JavaClassLoader.class.getClassLoader();
-    public JavaClassLoader classLoader = new JavaClassLoader(parentClassLoader,new HashSet<String>());
+	public ClassLoader parentClassLoader = JavaClassLoader.class
+			.getClassLoader();
+	public JavaClassLoader classLoader = new JavaClassLoader(parentClassLoader,
+			new HashSet<String>());
+
 	/**
 	 * @param rootDirectory
 	 * @param port
 	 */
 	public Server(String rootDirectory, int port, WebServer window) {
-		this.attempts = new HashMap<String, Integer>();
-		this.blacklisted = new HashSet<String>();
 		this.rootDirectory = rootDirectory;
-			// We obtain the file system of the Path
+		// We obtain the file system of the Path
 		this.port = port;
 		this.stop = false;
 		this.connections = 0;
 		this.serviceTime = 0;
 		this.window = window;
-		this.plugins = new HashMap<String,AbstractPlugin>();
-		
-		 File dir = new File("web/plugins");
-		  File[] directoryListing = dir.listFiles();
-		  if (directoryListing != null) {
-		    for (File file : directoryListing) {
-		      uploadPlugin(Paths.get(file.getPath()));
-		    }
-		  } else {
-		  }
+		this.plugins = new HashMap<String, AbstractPlugin>();
+
+		File dir = new File("web/plugins");
+		File[] directoryListing = dir.listFiles();
+		if (directoryListing != null) {
+			for (File file : directoryListing) {
+				uploadPlugin(Paths.get(file.getPath()));
+			}
+		} else {
+		}
 	}
 
 	/**
@@ -105,7 +103,6 @@ public class Server implements Runnable {
 	public int getPort() {
 		return port;
 	}
-
 
 	/**
 	 * Returns connections serviced per second. Synchronized to be used in
@@ -148,51 +145,24 @@ public class Server implements Runnable {
 	 */
 	public void run() {
 		try {
-			PluginWatcher watcher = new PluginWatcher(this,"web/plugins");
+			PluginWatcher watcher = new PluginWatcher(this, "web/plugins");
 			new Thread(watcher).start();
-			Clock clock = new Clock(this);
-			
-			new Thread(clock).start();
 
+			System.out.println("Awaiting Connection from Broker");
 			this.welcomeSocket = new ServerSocket(port);
-			// Now keep welcoming new connections until stop flag is set to true
-			while (true) {
-				// Listen for incoming socket connection
-				// This method block until somebody makes a request
+			while(true){
 				Socket connectionSocket = this.welcomeSocket.accept();
-				String sockID = connectionSocket.getInetAddress().toString();
-				System.out.println("SOCK" +sockID);
-				if(blacklisted.contains(sockID)){
-					try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)))) {
-					out.write("BLACKLISTED " + sockID + " TOO MANY CONNECTION ATTEMPTS");	
-					}
-					continue;
-				}
-				int attCount = 1;
-				if(attempts.containsKey(sockID)){
-					attCount = attempts.get(sockID)+1;
-					attempts.put(sockID, attCount);
-				}else{
-					attempts.put(sockID, attCount);
-				}
-				if(attCount>=BAN_THRESHOLD){
-					blacklisted.add(sockID);
-					continue;
-				}
-				System.out.println(attCount);
-//				System.out.println(attempts.get(sockID)+"");
-				// Come out of the loop if the stop flag is set
+				System.out.println("Connection received from Broker");	
 				if (this.stop)
 					break;
-
-				// Create a handler for this incoming connection and start the
-				// handler in a new thread
-				ConnectionHandler handler = new ConnectionHandler(this,
-						connectionSocket);
+				ConnectionHandler handler = new ConnectionHandler(this,	connectionSocket);
 				new Thread(handler).start();
 			}
+			
+			
 			this.welcomeSocket.close();
-		} catch (Exception e) {
+		}catch (Exception e) {
+
 			window.showSocketException(e);
 		}
 	}
@@ -231,93 +201,69 @@ public class Server implements Runnable {
 
 	/**
 	 * @param filename
-	 * This function get called when a new file is removed
+	 *            This function get called when a new file is removed
 	 */
 	public void removePlugin(Path filename) {
 		// TODO Auto-generated method stub
-//		String file = filename.getFileName().toString();
-//		int split = file.indexOf('.');
-//		String name = file.substring(0,split);
-//		if(!plugins.containsKey(name)){
-//			plugins.remove(name);
-//		}
+		// String file = filename.getFileName().toString();
+		// int split = file.indexOf('.');
+		// String name = file.substring(0,split);
+		// if(!plugins.containsKey(name)){
+		// plugins.remove(name);
+		// }
 	}
 
 	/**
 	 * @param filename
-	 * This function get called when a new file is created or updated
+	 *            This function get called when a new file is created or updated
 	 */
 	public void uploadPlugin(Path filename) {
-			//File file = new File(filename.toString());
-//		this.classLoader = new JavaClassLoader(parentClassLoader, this.classLoader.loadedClasses);
-//		String fileString = filename.getFileName().toString();
-//		int split = fileString.indexOf('.');
-//		String name = fileString.substring(0,split);
-//		String className = "pluginImp." + name;
-//		Class clazz;
-//		if(this.plugins.containsKey(name)){
-//			clazz=this.classLoader.reloadClass(name, className);
-//		} else {
-//		 clazz = this.classLoader.loadNewClass(name, className);
-//		}
-//		AbstractPlugin plugin = (AbstractPlugin) clazz.newInstance();
-//		plugin.init(this.rootDirectory);
-//		System.out.println("Loaded "+ name);
-//		this.plugins.put(name, plugin);
-		try{
-		JarClassLoader jarLoader = new JarClassLoader(filename.toString());
-		String file = filename.getFileName().toString();
-		int split = file.indexOf('.');
-		String name = file.substring(0,split);
-		if(!plugins.containsKey(name)){
-		Class c = jarLoader.loadClass(name, true);
-        Object o;
-		o = c.newInstance();
-        AbstractPlugin plugin = (AbstractPlugin) c.newInstance();
-		System.out.println(plugin.getName());
-        plugin.init(this.getRootDirectory());
-        plugins.put(name,plugin);
-		}
-		} catch(Exception e){
+		// File file = new File(filename.toString());
+		// this.classLoader = new JavaClassLoader(parentClassLoader,
+		// this.classLoader.loadedClasses);
+		// String fileString = filename.getFileName().toString();
+		// int split = fileString.indexOf('.');
+		// String name = fileString.substring(0,split);
+		// String className = "pluginImp." + name;
+		// Class clazz;
+		// if(this.plugins.containsKey(name)){
+		// clazz=this.classLoader.reloadClass(name, className);
+		// } else {
+		// clazz = this.classLoader.loadNewClass(name, className);
+		// }
+		// AbstractPlugin plugin = (AbstractPlugin) clazz.newInstance();
+		// plugin.init(this.rootDirectory);
+		// System.out.println("Loaded "+ name);
+		// this.plugins.put(name, plugin);
+		try {
+			JarClassLoader jarLoader = new JarClassLoader(filename.toString());
+			String file = filename.getFileName().toString();
+			int split = file.indexOf('.');
+			String name = file.substring(0, split);
+			if (!plugins.containsKey(name)) {
+				Class c = jarLoader.loadClass(name, true);
+				Object o;
+				o = c.newInstance();
+				AbstractPlugin plugin = (AbstractPlugin) c.newInstance();
+				System.out.println(plugin.getName());
+				plugin.init(this.getRootDirectory());
+				plugins.put(name, plugin);
+			}
+		} catch (Exception e) {
 			System.out.println("Error adding plugin");
 		}
-//        writeFilePathToText(filename.toString());
-		//}
-	
-	}	
-	/**
-	 * Resets the attempts resource
-	 */
-	public void resetAttempts() {
-		this.attempts.clear();
-		this.blacklisted.clear();
-		System.out.println("I reset the attempts and blacklist");
+		// writeFilePathToText(filename.toString());
+		// }
+
 	}
+
+
 	/**
 	 * @return
 	 */
 	public HashMap<String, AbstractPlugin> getPlugins() {
 		// TODO Auto-generated method stub
 		return this.plugins;
-	}
-	public class Clock implements Runnable {
-
-	    private Server serv;
-
-	    public Clock(Server serv) {
-	        this.serv = serv;
-	    }
-
-	    public void run() {
-	    	while(true){
-	    		try {
-	    			Thread.sleep(1000*5*60);
-	    			serv.resetAttempts();
-	    		} catch (InterruptedException e) {
-	    			e.printStackTrace();
-	    		}
-	    	}
-	    }
 	}
 
 }

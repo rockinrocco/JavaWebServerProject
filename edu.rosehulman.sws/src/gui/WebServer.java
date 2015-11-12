@@ -97,10 +97,10 @@ public class WebServer extends JFrame {
 		// Input panel widgets
 		this.panelInput = new JPanel();
 		this.lblPortNumber = new JLabel("Port Number");
-		this.txtPortNumber = new JTextField("8080");
+		this.txtPortNumber = new JTextField("8081");
 		this.lblRootDirectory = new JLabel("Select Root Directory");
 		// Set the root directory to be the current working directory
-		this.txtRootDirectory = new JTextField(System.getProperty("user.dir"));
+		this.txtRootDirectory = new JTextField(System.getProperty("user.dir") + "/web");
 		this.txtRootDirectory.setEditable(false);
 		this.txtRootDirectory.setPreferredSize(new Dimension(400, 21));
 		this.butSelect = new JButton("Select");

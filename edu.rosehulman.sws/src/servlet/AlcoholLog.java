@@ -29,6 +29,7 @@
 package servlet;
 
 import java.io.File;
+import java.util.concurrent.ThreadLocalRandom;
 
 import com.google.gson.Gson;
 
@@ -53,27 +54,31 @@ public class AlcoholLog extends IServlet{
 	@Override
 	public HttpResponse handleRequest(HttpRequest request) {
 		Gson gson = new Gson();
-		System.out.println(request.getMethod());
+		stats = gson.fromJson(new String(request.getBody()), DrinkStats.class);
 		if(request.getMethod().equals(Protocol.POST)){
+			System.out.println("Handling Post");
 			stats.count = stats.count + 1;
 		}
 		if(request.getMethod().equals(Protocol.PUT)){
-			System.out.println("new user");
-
-			stats = gson.fromJson(new String(request.getBody()), DrinkStats.class);
+			System.out.println("Handling Put");
 		}
 		
 		if(request.getMethod().equals(Protocol.DELETE)){
+			System.out.println("Handling Delete");
 			stats.count = 0;
 		}
 		if(request.getMethod().equals(Protocol.GET)){
-			System.out.println("get alcy");
-			String res = gson.toJson(stats);
-			HttpResponse response = HttpResponseFactory.create200OK(res,Protocol.CLOSE);
-			return response;			
+			System.out.println("Handling Get");
+			String[] dranks = new String[] {"Hamms", "Hamms Special Light", "Straight Vodka","Cement Mixer","You're an alcoholic"};
+			int rando = ThreadLocalRandom.current().nextInt(0, 4 + 1);
+
+			String randomDrink = dranks[rando];
+			HttpResponse response = HttpResponseFactory.create200OK(gson.toJson(randomDrink), Protocol.CLOSE);
+			return response;
 		}	
 		
-		HttpResponse response = HttpResponseFactory.create200OK(Protocol.CLOSE);
+		HttpResponse response = HttpResponseFactory.create200OK(gson.toJson(stats),Protocol.CLOSE);
+
 		return response;
 	}
 

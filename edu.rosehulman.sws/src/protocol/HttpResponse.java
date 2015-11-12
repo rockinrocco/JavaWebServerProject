@@ -23,11 +23,16 @@ package protocol;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.Collections;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 /**
  * Represents a response object for HTTP.
@@ -41,6 +46,7 @@ public class HttpResponse {
 	private Map<String, String> header;
 	private File file;
 	private String JSON;
+	private String body;
 
 	
 	/**
@@ -67,6 +73,9 @@ public class HttpResponse {
 		this.JSON = JSON;
 	}
 
+	public HttpResponse(){
+		
+	}
 	/**
 	 * Gets the version of the HTTP.
 	 * 
@@ -120,6 +129,7 @@ public class HttpResponse {
 		this.header.put(key, value);
 	}
 	
+
 	/**
 	 * Writes the data of the http response object to the output stream.
 	 * 
@@ -175,27 +185,22 @@ public class HttpResponse {
 	@Override
 	public String toString() {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("----------------------------------\n");
 		buffer.append(this.version);
 		buffer.append(Protocol.SPACE);
 		buffer.append(this.status);
 		buffer.append(Protocol.SPACE);
 		buffer.append(this.phrase);
-		buffer.append(Protocol.LF);
+		buffer.append(Protocol.CRLF);
 		
 		for(Map.Entry<String, String> entry : this.header.entrySet()) {
 			buffer.append(entry.getKey());
 			buffer.append(Protocol.SEPERATOR);
 			buffer.append(Protocol.SPACE);
 			buffer.append(entry.getValue());
-			buffer.append(Protocol.LF);
+			buffer.append(Protocol.CRLF);
 		}
 		
-		buffer.append(Protocol.LF);
-		if(file != null) {
-			buffer.append("Data: ");
-			buffer.append(this.file.getAbsolutePath());
-		}
+		buffer.append(Protocol.CRLF);
 		buffer.append("\n----------------------------------\n");
 		return buffer.toString();
 	}
