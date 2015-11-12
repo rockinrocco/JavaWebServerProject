@@ -59,10 +59,6 @@ public class LoadBalancerRunner {
 			servers.add(num);
 		}
 		LoadBalancer balancer = new LoadBalancer(servers,8080);
-		
 		new Thread(balancer).start();
-		
-		
-
 	}
 }

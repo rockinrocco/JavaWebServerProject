@@ -42,43 +42,21 @@ import protocol.Protocol;
  */
 public class Waiter extends IServlet{
 	private String[] error;
+	public int seconds;
 	public Waiter(String root) {
 		super(root);
+		this.seconds = 6;
 	}
 
 	@Override
 	public HttpResponse handleRequest(HttpRequest request) {
 		try {
 			System.out.println("Wait");
-		    Thread.sleep(4000);                 //1000 milliseconds is one second.
+		    Thread.sleep(1000*this.seconds);        //1000 milliseconds is one second.
 		    System.out.println("Done waiting");
 		} catch(InterruptedException ex) {
 		    Thread.currentThread().interrupt();
 		}
-		File file = new File(rootDirectory + "/TestPlugin.html");
-		// Check if the file exists
-		if(file.exists()) {
-			if(file.isDirectory()) {
-				// Look for default index.html file in a directory
-				String location = rootDirectory + "/good.txt" + System.getProperty("file.separator") + Protocol.DEFAULT_FILE;
-				file = new File(location);
-				if(file.exists()) {
-					// Lets create 200 OK response
-					return HttpResponseFactory.create200OK(file, Protocol.CLOSE);
-				}
-				else {
-					// File does not exist so lets create 404 file not found code
-					return HttpResponseFactory.create404NotFound(Protocol.CLOSE);
-				}
-			}
-			else { // Its a file
-				// Lets create 200 OK response
-				return HttpResponseFactory.create200OK(file, Protocol.CLOSE);
-			}
-		}
-		else {
-			// File does not exist so lets create 404 file not found code
-			return HttpResponseFactory.create404NotFound(Protocol.CLOSE);
-		}
+		return HttpResponseFactory.create200OK("Try",Protocol.CLOSE);
 	}
 }

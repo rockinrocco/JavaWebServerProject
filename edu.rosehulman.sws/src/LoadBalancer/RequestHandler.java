@@ -37,8 +37,6 @@ import java.net.Socket;
 import java.nio.charset.Charset;
 import java.util.StringTokenizer;
 
-import com.google.common.io.ByteStreams;
-
 import protocol.HttpRequest;
 import protocol.HttpResponse;
 import protocol.HttpResponseFactory;
@@ -59,7 +57,6 @@ public class RequestHandler implements Runnable {
 	 * @param socket
 	 */
 	public RequestHandler(Socket connectionSocket, Socket socket) {
-		// TODO Auto-generated constructor stub
 		this.connectionSocket = connectionSocket;
 		this.serverSocket = socket;
 	}
@@ -118,16 +115,14 @@ public class RequestHandler implements Runnable {
 			if(!hasContent){
 			//ok response, no body	
 			} else {
-			char[] body = new char[10024];
-			reader.read(body);
-			fullRequest.append(String.valueOf(body) + Protocol.CRLF);
+				char[] body = new char[10024];
+				reader.read(body);
+				fullRequest.append(String.valueOf(body) + Protocol.CRLF);
 			}
 			String stringRequest = fullRequest.toString();
 			System.out.print(stringRequest);
 			clientOutStream.write(stringRequest.getBytes(Charset
-					.forName("UTF-8")));
-
-			
+					.forName("UTF-8")));			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

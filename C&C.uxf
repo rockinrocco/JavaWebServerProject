@@ -16,7 +16,7 @@
     <id>UMLClass</id>
     <coordinates>
       <x>400</x>
-      <y>250</y>
+      <y>260</y>
       <w>150</w>
       <h>50</h>
     </coordinates>
@@ -27,14 +27,14 @@
     <id>Relation</id>
     <coordinates>
       <x>190</x>
-      <y>260</y>
-      <w>230</w>
-      <h>130</h>
+      <y>170</y>
+      <w>170</w>
+      <h>220</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
-1. Connect and 
+2. Connect and 
 Send HTTP Request</panel_attributes>
-    <additional_attributes>210.0;10.0;10.0;110.0</additional_attributes>
+    <additional_attributes>30.0;10.0;10.0;200.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
@@ -73,17 +73,17 @@ Send HTTP Request</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>410</x>
-      <y>290</y>
+      <y>300</y>
       <w>240</w>
-      <h>130</h>
+      <h>120</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
-2. With connections has 
+4. With connections has 
 ConnectionHandler handle request
 
 
 </panel_attributes>
-    <additional_attributes>10.0;110.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -94,7 +94,7 @@ ConnectionHandler handle request
       <h>130</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
-3. Figures out which plugin and forward request
+5. Figures out which plugin and forward request
 and records the request in the log
 
 
@@ -110,7 +110,7 @@ and records the request in the log
       <h>130</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
-4. Determines which servlet and sends request
+6. Determines which servlet and sends request
 
 
 </panel_attributes>
@@ -127,7 +127,7 @@ and records the request in the log
     <panel_attributes>lt=&lt;-
 
 
-5. Runs code and returns response</panel_attributes>
+7. Runs code and returns response</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
   </element>
   <element>
@@ -141,35 +141,72 @@ and records the request in the log
     <panel_attributes>lt=&lt;-
 
 
-6. Returns response</panel_attributes>
+8. Returns response</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>480</x>
-      <y>290</y>
+      <y>300</y>
       <w>150</w>
-      <h>130</h>
+      <h>120</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 
 
-7. Returns response</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+9. Returns response</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>240</x>
-      <y>280</y>
+      <y>290</y>
       <w>180</w>
-      <h>150</h>
+      <h>140</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 
 
-7. Returns response</panel_attributes>
-    <additional_attributes>10.0;130.0;160.0;10.0</additional_attributes>
+10. Returns response</panel_attributes>
+    <additional_attributes>10.0;120.0;160.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>220</x>
+      <y>160</y>
+      <w>150</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>LoadBalancer</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>340</x>
+      <y>200</y>
+      <w>330</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+3. Select Server socket and forward request</panel_attributes>
+    <additional_attributes>60.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>360</x>
+      <y>150</y>
+      <w>200</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+1. Connect to broker
+
+</panel_attributes>
+    <additional_attributes>10.0;10.0;180.0;110.0</additional_attributes>
   </element>
 </diagram>

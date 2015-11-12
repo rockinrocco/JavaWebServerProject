@@ -113,33 +113,103 @@ function submitPost() {
         type: 'POST',
         data: JSON.stringify(stats),
         success: function(result) {
-            // Do something with the result
-           console.log(result)
+          // Do something with the result
+          console.log(result)
          
-            stats = result;
-            var currentBAC = (result.count * 10 * 0.048) //assuming 0.05 alc for each drink
-            currentBAC = (currentBAC * 6 / result.weight);
-            $("#bacArea").html("Estimated BAC: " + currentBAC.toFixed(3))
+          stats = result;
+          var currentBAC = (result.count * 10 * 0.048) //assuming 0.05 alc for each drink
+          currentBAC = (currentBAC * 6 / result.weight);
+          $("#bacArea").html("Estimated BAC: " + currentBAC.toFixed(3))
 
-            if(currentBAC >= 0.08){
-            $("#bacArea").html("Estimated BAC: " + currentBAC.toFixed(3) + "<br>" + "<h3> CONGRATULATIONS </h3>")
-
-              $("#hiddenPic").show()
-            }
+          if(currentBAC >= 0.08){
+            $("#bacArea").html("Estimated BAC: " + currentBAC.toFixed(3) + "<br>" + "<h3> CONGRATULATIONS </h3>");
+            $("#hiddenPic").show();
+          }
         }
     });
 }
 
 function submitGet() {
+  var init = new Date();
     $.ajax({
         url: "amIDrunk",
         type: 'GET',
         success: function(result) {
-            console.log(result)
+            console.log(result);
             $("#bacArea").html("Drink a " + result + " next");
+            var first = new Date();
+            var dSec = (first-init)/1000;
+            console.log("Total Time for GET: "+dSec);
         }
     });
 }
+
+function testStress() {
+  var count = 1;
+  var json = '{ "name" :"PAUL", "weight":"100","sex":"1","count":"0"}';
+  stats=JSON.parse(json);
+  $.ajax({
+        url:"addDrink",
+        type:"PUT",
+        data: json,
+        success:function(result){
+          stats=result;
+        }
+      });
+  for(var i=0;i<count;i++){
+    (function(i){
+        $.ajax({
+        url:"amIDrunk",
+        type:"GET",
+        success:function(result){
+            console.log(result);
+          }
+      });
+      $.ajax({
+        url:"addDrink",
+        type:"PUT",
+        data: JSON.stringify(stats),
+        success:function(result){
+          console.log(result);
+        }
+      });
+      $.ajax({
+        url:"editDrink",
+        type: 'POST',
+        data: JSON.stringify(stats),
+        success:function(result){
+          console.log(result);
+          stats=result;
+          if(i>=count-1){
+            console.log()
+          }
+        }
+      });
+    })(i);
+  }
+}
+
+function testPerformance() {
+  var init = new Date();
+  var count = 100;
+  for(var i=0;i<count;i++){
+    (function(i){
+        $.ajax({
+        url:"amIDrunk",
+        type:"GET",
+        success:function(result){
+          if(i>=count-1){
+            var first = new Date();
+            var dSec = (first-init)/1000;
+            console.log("Total Time for "+count+": "+dSec);
+          }
+        }
+      });
+    })(i);
+  }
+}
+
+
 </script>
 
 <body>
@@ -185,6 +255,12 @@ function submitGet() {
                 <audio id="turnDown">
                     <source src="http://soundfox.me/audio/dj_snake_-_turn_down_for_what_feat._lil_jon.mp3"></source>
                 </audio>
+
+                <p>Test Suite</p>
+                </p>
+                  <button class="btn btn-danger" onclick="testStress()">Stress Test</button>
+                  <button class="btn btn-danger" onclick="testPerformance()">Performance</button>
+                </p>
             </div>
         </div>
         <div id="main">

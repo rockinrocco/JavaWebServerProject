@@ -38,11 +38,15 @@ public class DrinkStats {
 	public int weight;
 	public int count;
 	public boolean isMale;
+	public int code;
+	public String message;
 	
 	DrinkStats(String name, int w, int c, boolean isMale){
 		this.name = name;
 		this.weight = w;
 		this.count = c;
-		this.isMale = isMale;	
+		this.isMale = isMale;
+		this.message = "OK";
+		this.code = 200;
 	}
 }

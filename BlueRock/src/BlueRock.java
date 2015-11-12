@@ -38,6 +38,7 @@ import servlet.FilePostGood;
 import servlet.GetServlet3Page;
 import servlet.HttpWorks;
 import servlet.LoadHtmlPage;
+import servlet.Waiter;
 
 /**
  * 
@@ -63,7 +64,6 @@ public class BlueRock extends AbstractPlugin{
 		addServlet("addDrink","PUT", log);
 		addServlet("editDrink","POST", log);
 		addServlet("resetList","DELETE", log);
-
 	}
 
 	@Override

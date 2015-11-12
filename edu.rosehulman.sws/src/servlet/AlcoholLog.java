@@ -69,8 +69,8 @@ public class AlcoholLog extends IServlet{
 		}
 		if(request.getMethod().equals(Protocol.GET)){
 			System.out.println("Handling Get");
-			String[] dranks = new String[] {"Hamms", "Hamms Special Light", "Straight Vodka","Cement Mixer","You're an alcoholic"};
-			int rando = ThreadLocalRandom.current().nextInt(0, 4 + 1);
+			String[] dranks = new String[] {"Hamms", "Hamms Special Light", "Straight Vodka","Cement Mixer","You're an alcoholic","Grasshopper","Gin & Tonic"};
+			int rando = ThreadLocalRandom.current().nextInt(0, dranks.length);
 
 			String randomDrink = dranks[rando];
 			HttpResponse response = HttpResponseFactory.create200OK(gson.toJson(randomDrink), Protocol.CLOSE);

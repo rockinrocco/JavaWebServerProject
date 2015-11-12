@@ -54,7 +54,7 @@ public class LoadBalancer implements Runnable {
 	private ServerSocket loadBalancerSocket;
 	private HashMap<String, Integer> attempts;
 	private HashSet<String> blacklisted;
-	private final int BAN_THRESHOLD = 50;
+	private final int BAN_THRESHOLD = 500;
 
 
 	public LoadBalancer(ArrayList<Integer> serverPorts, int myPort) {
@@ -79,10 +79,13 @@ public class LoadBalancer implements Runnable {
 			new Thread(clock).start();
 
 			loadBalancerSocket = new ServerSocket(myPort);
-			int currentRequest =0;
+			int currentRequest=0;
 			while(true){
+				System.out.println("Current Servlet1: "+currentRequest);
 				Socket connectionSocket = this.loadBalancerSocket.accept();
+				System.out.println("Current Servlet2: "+currentRequest);
 				String sockID = connectionSocket.getInetAddress().toString();
+				System.out.println("Current Servlet3: "+currentRequest);
 				System.out.println("SOCK" + sockID);
 				if (blacklisted.contains(sockID)) {
 					try (PrintWriter out = new PrintWriter(new BufferedWriter(
@@ -106,9 +109,12 @@ public class LoadBalancer implements Runnable {
 				System.out.println(attCount);
 				// System.out.println(attempts.get(sockID)+"");
 				// Come out of the loop if the stop flag is set
-				RequestHandler handler = new RequestHandler(connectionSocket,sockets.get(currentRequest));
+				System.out.println("Current Servlet4: "+currentRequest);
+//				RequestHandler handler = new RequestHandler(connectionSocket,sockets.get(currentRequest));
+				System.out.println("Current Servlet5: "+currentRequest);
 				currentRequest = (currentRequest + 1) % serverPorts.size();
-				new Thread(handler).start();
+				new Thread(new RequestHandler(connectionSocket,sockets.get(currentRequest))).start();
+				System.out.println("done");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
